@@ -9,6 +9,7 @@ Personalized Local Copy of Stack Overflow
 
 ## Features
 
+* Download unsafe HTML
 * Download All Questions
 * Download All Answers
 * Generate Markdown Files w/ Frontmatter

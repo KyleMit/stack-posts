@@ -1,17 +1,44 @@
 const fetch = require("node-fetch");
 const { promises: fs } = require("fs")
+const yaml = require('js-yaml');
+
 
 main()
 
 async function main() {
-    let userId = 1366033
 
-    let questions = await getQuestions(userId)
+    console.time()
 
-    await setQuestions(questions)
+    // await fetchData()
 
+    let questionText = await fs.readFile('./data/questions.json', 'utf-8')
+    let questions = JSON.parse(questionText)
+
+    await Promise.all(questions.map(async function(question) {
+
+        let path = `./questions/${question.question_id}.md`
+
+        let { question_id, title, score, view_count, tags } = question
+        let meta = { question_id, title, score, view_count, tags }
+        let frontmatter = yaml.safeDump(yaml.safeLoad(JSON.stringify(meta)))
+
+        let post = `---
+${frontmatter}---
+
+${question.body_markdown}
+`
+            // can skip last await
+        fs.writeFile(path, post, 'utf-8')
+    }));
+
+    console.timeEnd()
 }
 
+async function fetchData() {
+    let userId = 1366033
+    let questions = await getQuestions(userId)
+    await setQuestions(questions)
+}
 
 async function getQuestions(userId) {
 
