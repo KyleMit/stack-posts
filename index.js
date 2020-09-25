@@ -9,7 +9,7 @@ async function main() {
 
     console.time()
 
-    // await fetchData()
+    await fetchData()
 
     let questionText = await fs.readFile('./data/questions.json', 'utf-8')
     let questions = JSON.parse(questionText)
@@ -41,6 +41,7 @@ async function fetchData() {
 }
 
 async function getQuestions(userId) {
+    let filter = "ls.OxV)TU.yiDYF4d4clGwwb06WqnuOBDvxQZL"
 
     let questBase = `https://api.stackexchange.com/2.2/users/${userId}/questions`
 
@@ -50,7 +51,7 @@ async function getQuestions(userId) {
         order: "desc",
         sort: "activity",
         site: "stackoverflow",
-        filter: "!)5TZ1K2YyqRS(hrKyA8fD0E_CpML"
+        filter: filter
     }
 
     // declare placeholders
