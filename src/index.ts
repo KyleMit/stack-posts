@@ -1,9 +1,10 @@
-import fs, { promises as fsp } from "fs"
-import { URLSearchParams } from "url"
-import fetch from "node-fetch"
+import { promises as fsp } from "fs"
 import yaml from "js-yaml"
 import config from "./config.json"
-import { Question, QuestionResponse } from "./interfaces"
+import { epochToISO } from "./date"
+import { checkFileExists } from "./file"
+import { Question, QuestionApi } from "./interfaces"
+import { getQuestionsByUser } from "./stack"
 
 const QUESTION_DATA_FILE = "./_site/data/questions.json"
 const QUESTION_POST_FOLDER = "./_site/posts/questions"
@@ -21,13 +22,15 @@ async function main() {
 }
 
 async function getQuestions(): Promise<Question[]> {
+  let questionsApi: QuestionApi[]
   let questions: Question[]
 
   // TODO cache bust param?
   let questionsExist = await checkFileExists(QUESTION_DATA_FILE)
 
   if (!questionsExist) {
-    questions = await fetchQuestions(config.userId)
+    questionsApi = await getQuestionsByUser(config.userId)
+    questions = transformQuestions(questionsApi)
     await cacheQuestions(questions)
   } else {
     questions = await readQuestions()
@@ -36,38 +39,37 @@ async function getQuestions(): Promise<Question[]> {
   return questions
 }
 
-async function fetchQuestions(userId: Number) {
-  let questBase = `https://api.stackexchange.com/2.2/users/${userId}/questions`
+function transformQuestions(questions: QuestionApi[]): Question[] {
+  let transformed: Question[] = questions.map((q1) => {
+    let {
+      question_id,
+      accepted_answer_id,
+      title,
+      score,
+      creation_date: creation_date_epoch,
+      last_activity_date: last_activity_date_epoch,
+      tags,
+      body_markdown,
+    } = q1
 
-  let params = {
-    page: "1",
-    pagesize: "100",
-    order: "desc",
-    sort: "activity",
-    site: "stackoverflow",
-    filter: config.questionFilter,
-  }
+    let creation_date = epochToISO(creation_date_epoch)
+    let last_activity_date = epochToISO(last_activity_date_epoch)
 
-  // declare placeholders
-  let json: QuestionResponse
-  let questions: Question[] = []
+    let q2 = {
+      question_id,
+      accepted_answer_id,
+      title,
+      score,
+      creation_date,
+      last_activity_date,
+      tags,
+      body_markdown,
+    }
 
-  // make calls in a loop
-  do {
-    let queryString = new URLSearchParams(params).toString()
-    let queryUrl = `${questBase}?${queryString}`
+    return q2
+  })
 
-    // query data
-    json = await getData<QuestionResponse>(queryUrl)
-
-    // append to questions
-    questions.push(...json.items)
-
-    // increment page counter
-    params.page += 1
-  } while (json.has_more)
-
-  return questions
+  return transformed
 }
 
 async function cacheQuestions(questions: Question[]) {
@@ -82,37 +84,23 @@ async function readQuestions(): Promise<Question[]> {
 }
 
 async function writeQuestionPosts(questions: Question[]) {
+  let cachedPosts = await fsp.readdir(QUESTION_POST_FOLDER)
+  let simpleUpToDate = cachedPosts.length === questions.length
+
+  if (simpleUpToDate) return
+
   // write file param
   await Promise.all(
     questions.map(async function (question) {
       let path = `${QUESTION_POST_FOLDER}/${question.question_id}.md`
 
-      let { question_id, title, score, view_count, tags } = question
-      let meta = { question_id, title, score, view_count, tags }
+      let { question_id, title, score, tags, creation_date } = question
+      let meta = { question_id, title, score, creation_date, tags }
       let frontmatter = yaml.safeDump(yaml.safeLoad(JSON.stringify(meta)))
 
-      let post = `---\n${frontmatter}---\n\n${question.body_markdown}
-`
-      // can skip last await
+      let post = `---\n${frontmatter}---\n\n${question.body_markdown}`
+
       fsp.writeFile(path, post, "utf-8")
     })
   )
-}
-
-async function checkFileExists(file: string) {
-  return fsp
-    .access(file, fs.constants.F_OK)
-    .then(() => true)
-    .catch(() => false)
-}
-
-async function getData<T>(url: string): Promise<T> {
-  try {
-    const response = await fetch(url)
-    const json: T = await response.json()
-    return json
-  } catch (error) {
-    console.log(error)
-    throw error
-  }
 }

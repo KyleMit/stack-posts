@@ -1,0 +1,26 @@
+# Use RestClient by Huachao Mao - https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@baseUrl = https://api.stackexchange.com/2.2
+@userId = 1366033
+@filter = *I6kVOgAG3VAp35OqFW2FpKDCdyq)WBEv)NpyrRZAt)K
+
+// get questions
+GET {{baseUrl}}/users/{{userId}}/questions
+    ?page=1
+    &pagesize=100
+    &order=desc
+    &sort=activity
+    &site=stackoverflow
+    &filter={{filter}}
+
+
+###
+
+// get answers
+GET {{baseUrl}}/users/{{userId}}/answers
+    ?page=1
+    &pagesize=100
+    &order=desc
+    &sort=activity
+    &site=stackoverflow
+    &filter={{filter}}
