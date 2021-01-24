@@ -41,8 +41,8 @@ export interface AnswerApi {
 }
 
 export interface Answer {
-  question_id: number
   answer_id: number
+  question_id: number
   score: number
   is_accepted: boolean
   creation_date: string

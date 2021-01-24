@@ -11,7 +11,10 @@ Personalized Local Copy of Stack Overflow
 
 * Download unsafe HTML
 * Download All Questions
+  * Plus accepted answer
 * Download All Answers
+  * Plus prompting question
+* Download All users metadata
 * Generate Markdown Files w/ Frontmatter
 * Build site with **awesome** search 🚀
 * Run Weekly Update via Github Actions

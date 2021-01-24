@@ -1,4 +1,5 @@
 import {
+  AnswerApi,
   Params as StackParams,
   PARAM_FILTER,
   PARAM_ORDER,
@@ -20,7 +21,15 @@ export async function getQuestionsByUser(
   return questions
 }
 
-export async function fetchAllData<T>(
+export async function getAnswersByUser(userId: Number): Promise<AnswerApi[]> {
+  let ansUrl = `https://api.stackexchange.com/2.2/users/${userId}/answers`
+
+  let answers = await fetchAllData<AnswerApi>(ansUrl)
+
+  return answers
+}
+
+async function fetchAllData<T>(
   url: string,
   params: StackParams = {
     page: 1,
@@ -57,7 +66,7 @@ function UrlStackParams(params: StackParams): string {
   const keys: [string, string][] = Object.entries(params).map((entry) => {
     return [entry[0], entry[1].toString()]
   })
-  console.log(keys)
+
   let url = new URLSearchParams(keys)
 
   return url.toString()
