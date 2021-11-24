@@ -1,5 +1,4 @@
 import fs, { promises as fsp } from "fs"
-import { dirname } from 'path';
 import { uniq } from "./array";
 
 export const checkFileExists = async (file: string): Promise<boolean> => fsp
