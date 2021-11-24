@@ -1,3 +1,15 @@
 {
-  "cSpell.ignoreRegExpList": ["filter.*", "shallow.*"]
+  "cSpell.ignoreRegExpList": ["filter.*", "shallow.*"],
+  "markdownlint.config": {
+    "MD041": false,
+    "MD026": false,
+    "MD046": false,
+    "MD033": false,
+    "MD014": false,
+    "MD047": false,
+    "MD010": false,
+    "MD029": false,
+    "MD007": false,
+    "MD009": false
+  }
 }

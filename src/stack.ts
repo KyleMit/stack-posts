@@ -7,50 +7,49 @@ import {
   PARAM_SORT,
   QuestionApi,
   ResponseBase,
-} from "./interfaces"
-import { getData } from "./http"
+} from "./models"
+import { fetchJson, IEntry } from "./utils"
 import { URLSearchParams } from "url"
 
-export async function getQuestionsByUser(
-  userId: Number
-): Promise<QuestionApi[]> {
-  let questBase = `https://api.stackexchange.com/2.2/users/${userId}/questions`
+export const getQuestionsByUser = async (userId: Number): Promise<QuestionApi[]> => {
+  const questBase = `https://api.stackexchange.com/2.2/users/${userId}/questions`
 
-  let questions = await fetchAllData<QuestionApi>(questBase)
+  const questions = await fetchAllData<QuestionApi>(questBase)
 
   return questions
 }
 
-export async function getAnswersByUser(userId: Number): Promise<AnswerApi[]> {
-  let ansUrl = `https://api.stackexchange.com/2.2/users/${userId}/answers`
+export const getAnswersByUser = async (userId: Number): Promise<AnswerApi[]> => {
+  const ansUrl = `https://api.stackexchange.com/2.2/users/${userId}/answers`
 
-  let answers = await fetchAllData<AnswerApi>(ansUrl)
+  const answers = await fetchAllData<AnswerApi>(ansUrl)
 
   return answers
 }
 
-async function fetchAllData<T>(
-  url: string,
-  params: StackParams = {
-    page: 1,
-    pagesize: 100,
-    order: PARAM_ORDER.desc,
-    sort: PARAM_SORT.activity,
-    site: PARAM_SITE.stackoverflow,
-    filter: PARAM_FILTER.shallow,
-  }
-): Promise<T[]> {
+const defaultOptions: StackParams = {
+  page: 1,
+  pagesize: 100,
+  order: PARAM_ORDER.desc,
+  sort: PARAM_SORT.activity,
+  site: PARAM_SITE.stackoverflow,
+  filter: PARAM_FILTER.shallow,
+}
+
+// type IFetchData<T> = (url: string, params: StackParams) => Promise<T[]>
+
+const fetchAllData = async <T>(url: string, params: StackParams = defaultOptions): Promise<T[]> => {
   // declare placeholders
   let resp: ResponseBase<T>
-  let questions: T[] = []
+  const questions: T[] = []
 
   // make calls in a loop
   do {
-    let queryString = UrlStackParams(params)
-    let queryUrl = `${url}?${queryString}`
+    const queryString = UrlStackParams(params)
+    const queryUrl = `${url}?${queryString}`
 
     // query data
-    resp = await getData<ResponseBase<T>>(queryUrl)
+    resp = await fetchJson<ResponseBase<T>>(queryUrl)
 
     // append to questions
     questions.push(...resp.items)
@@ -62,12 +61,10 @@ async function fetchAllData<T>(
   return questions
 }
 
-function UrlStackParams(params: StackParams): string {
-  const keys: [string, string][] = Object.entries(params).map((entry) => {
-    return [entry[0], entry[1].toString()]
-  })
+const UrlStackParams = (params: StackParams): string => {
+  const entries = Object.entries(params).map<IEntry>(([key, val]) => [key, val.toString()])
 
-  let url = new URLSearchParams(keys)
+  const url = new URLSearchParams(entries)
 
   return url.toString()
 }

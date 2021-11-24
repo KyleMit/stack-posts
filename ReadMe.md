@@ -31,9 +31,9 @@ Personalized Local Copy of Stack Overflow
 ## Example API Call
 
 ```js
-let userId = 1366033
-let base = `https://api.stackexchange.com/2.2/users/${userId}/questions`
-let params = {
+const userId = 1366033
+const base = `https://api.stackexchange.com/2.2/users/${userId}/questions`
+const params = {
     page: "1",
     pagesize: "5",
     order: "desc",
@@ -41,8 +41,8 @@ let params = {
     site: "stackoverflow",
     filter: "ls.OxV)TU.yiDYF4d4clGwwb06WqnuOBDvxQZL"
 }
-let queryString = new URLSearchParams(params).toString()
-let url = `${base}?${queryString}`
+const queryString = new URLSearchParams(params).toString()
+const url = `${base}?${queryString}`
 console.log(url)
 // https://api.stackexchange.com/2.2/users/1366033/questions?page=1&pagesize=5&order=desc&sort=activity&site=stackoverflow&filter=ls.OxV%29TU.yiDYF4d4clGwwb06WqnuOBDvxQZL
 ```

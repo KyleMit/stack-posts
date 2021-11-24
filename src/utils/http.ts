@@ -1,9 +1,9 @@
 import fetch from "node-fetch"
 
-export async function getData<T>(url: string): Promise<T> {
+export async function fetchJson<T>(url: string): Promise<T> {
   try {
     const response = await fetch(url)
-    const json: T = await response.json()
+    const json = await response.json() as T
     return json
   } catch (error) {
     console.log(error)
