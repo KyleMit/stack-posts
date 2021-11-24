@@ -1,29 +1,25 @@
 import { promises as fsp } from "fs"
-import yaml from "js-yaml"
 import config from "./config.json"
-import { epochToISO, checkFileExists } from "./utils"
+import { epochToISO, checkFileExists, objToFrontmatter, createDirectories } from "./utils"
 import { Answer, AnswerApi, Question, QuestionApi } from "./models"
-import { getAnswersByUser, getQuestionsByUser } from "./stack"
+import { getAnswersByUser, getQuestionsByUser } from "./apis/stack"
 
 main()
 
 async function main() {
   // create output directories
-  await fsp.mkdir("./_site/data", { recursive: true })
-  await fsp.mkdir("./_site/posts/questions", { recursive: true })
-  await fsp.mkdir("./_site/posts/answers", { recursive: true })
+  await createDirectories(Object.values(config.paths))
 
   const questions = await getQuestions()
-  await writeQuestionPosts(questions)
-
   const answers = await getAnswers()
-  await writeAnswerPosts(answers)
+
+  await writeQuestionPostsCache(questions)
+  await writeAnswerPostsCache(answers)
 }
 
 const getAnswers = async (): Promise<Answer[]> => {
   let answers: Answer[]
 
-  // TODO cache bust param?
   const answersExist = await checkFileExists(config.paths.answerCacheData)
 
   if (!answersExist) {
@@ -40,7 +36,6 @@ const getAnswers = async (): Promise<Answer[]> => {
 const getQuestions = async (): Promise<Question[]> => {
   let questions: Question[]
 
-  // TODO cache bust param?
   const questionsExist = await checkFileExists(config.paths.questionCacheData)
 
   if (!questionsExist) {
@@ -76,46 +71,48 @@ const getCacheData = async <T>(path: string): Promise<T> => {
   return obj
 }
 
-const writeQuestionPosts = async (questions: Question[]): Promise<void> => {
+const writeQuestionPostsCache = async (questions: Question[]): Promise<void> => {
   const cachedPosts = await fsp.readdir(config.paths.questionPostFolder)
   const simpleUpToDate = cachedPosts.length === questions.length
 
   if (simpleUpToDate) return
 
-  // write file param
-  await Promise.all(
-    questions.map(async function (question) {
-      const path = `${config.paths.questionPostFolder}/${question.question_id}.md`
-
-      const { question_id, title, score, tags, creation_date } = question
-      const meta = { question_id, title, score, creation_date, tags }
-      const frontmatter = yaml.safeDump(yaml.safeLoad(JSON.stringify(meta)))
-
-      const post = `---\n${frontmatter}---\n\n${question.body_markdown}`
-
-      fsp.writeFile(path, post, "utf-8")
-    })
-  )
+  await writeQuestionPosts(questions)
 }
 
-const writeAnswerPosts = async (answers: Answer[]): Promise<void> => {
+const writeAnswerPostsCache = async (answers: Answer[]): Promise<void> => {
   const cachedPosts = await fsp.readdir(config.paths.answerPostFolder)
   const simpleUpToDate = cachedPosts.length === answers.length
 
   if (simpleUpToDate) return
 
-  // write file param
-  await Promise.all(
-    answers.map(async function (answer) {
-      const path = `${config.paths.answerPostFolder}/${answer.answer_id}.md`
+  await writeAnswerPosts(answers)
+}
 
-      const { question_id, score, creation_date } = answer
-      const meta = { question_id, score, creation_date }
-      const frontmatter = yaml.safeDump(yaml.safeLoad(JSON.stringify(meta)))
+const writeQuestionPosts = async (questions: Question[]): Promise<void> => {
+  const writeFiles = questions.map(async function (question) {
+    const path = `${config.paths.questionPostFolder}/${question.question_id}.md`
 
-      const post = `---\n${frontmatter}---\n\n${answer.body_markdown}`
+    const { body_markdown, ...meta } = question
+    const frontmatter = objToFrontmatter(meta)
+    const post = `${frontmatter}\n${body_markdown}`
 
-      fsp.writeFile(path, post, "utf-8")
-    })
-  )
+    fsp.writeFile(path, post, "utf-8")
+  });
+
+  await Promise.all(writeFiles);
+}
+
+const writeAnswerPosts = async (answers: Answer[]): Promise<void> => {
+  const writeFiles = answers.map(async function (answer) {
+    const path = `${config.paths.answerPostFolder}/${answer.answer_id}.md`
+
+    const { body_markdown, ...meta } = answer
+    const frontmatter = objToFrontmatter(meta);
+    const post = `${frontmatter}\n${body_markdown}`
+
+    fsp.writeFile(path, post, "utf-8")
+  })
+
+  await Promise.all(writeFiles);
 }

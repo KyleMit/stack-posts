@@ -15,6 +15,7 @@ export interface Answer extends Modify<AnswerApi, {
     last_activity_date: string
 }> {}
 
+export interface AnswerMeta extends Omit<Answer, 'body_markdown'> {}
 
 const create: CreateMethod<Answer> = (args) => ({
     question_id: args?.question_id ?? 0,

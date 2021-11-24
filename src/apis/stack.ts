@@ -7,8 +7,8 @@ import {
   PARAM_SORT,
   QuestionApi,
   ResponseBase,
-} from "./models"
-import { fetchJson, IEntry } from "./utils"
+} from "../models"
+import { fetchJson, IEntry } from "../utils"
 import { URLSearchParams } from "url"
 
 export const getQuestionsByUser = async (userId: Number): Promise<QuestionApi[]> => {

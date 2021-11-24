@@ -16,6 +16,8 @@ export interface Question extends Modify<QuestionApi, {
     last_activity_date: string
 }> {}
 
+export interface QuestionMeta extends Omit<Question, 'body_markdown'> {}
+
 const create: CreateMethod<Question> = (args) => ({
     question_id: args?.question_id ?? 0,
     accepted_answer_id: args?.accepted_answer_id ?? 0,
