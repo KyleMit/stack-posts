@@ -1,7 +1,7 @@
 import {
   Answer,
   AnswerApi,
-  Params as StackParams,
+  StackParams,
   PARAM_FILTER,
   PARAM_ORDER,
   PARAM_SITE,
@@ -50,18 +50,13 @@ export const getAnswersByUser = async (userId: number): Promise<Answer[]> => {
   return transformApiAnswers(answers)
 }
 
-const defaultOptions: StackParams = {
-  page: 1,
-  pagesize: 100,
-  order: PARAM_ORDER.desc,
-  sort: PARAM_SORT.activity,
-  site: PARAM_SITE.stackoverflow,
-  filter: PARAM_FILTER.shallow,
-}
 
-const fetchAllData = async <T>(url: string, params: StackParams = defaultOptions): Promise<T[]> => {
+
+
+const fetchAllData = async <T>(url: string, queryParams?: Partial<StackParams>): Promise<T[]> => {
   // declare placeholders
   let resp: ResponseBase<T>
+  const params = StackParams.create(queryParams);
   const items: T[] = []
 
   // make calls in a loop
@@ -82,7 +77,7 @@ const fetchAllData = async <T>(url: string, params: StackParams = defaultOptions
   return items
 }
 
-const fetchAllDataChunked = async <T>(url: string, ids: number[], params: StackParams = defaultOptions): Promise<T[]> => {
+const fetchAllDataChunked = async <T>(url: string, ids: number[], params?: Partial<StackParams>): Promise<T[]> => {
   const idChunks = chunkArray(ids, 99)
 
   // make calls in a loop
@@ -101,10 +96,9 @@ const fetchAllDataChunked = async <T>(url: string, ids: number[], params: StackP
   return items
 }
 
-const UrlStackParams = (params: StackParams): string => {
+const UrlStackParams = (queryParams?: Partial<StackParams>): string => {
+  const params = StackParams.create(queryParams);
   const entries = Object.entries(params).map<IEntry>(([key, val]) => [key, val.toString()])
-
   const url = new URLSearchParams(entries)
-
   return url.toString()
 }
