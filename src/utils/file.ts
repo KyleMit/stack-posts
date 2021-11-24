@@ -8,8 +8,9 @@ export const checkFileExists = async (file: string): Promise<boolean> => fsp
     .catch(() => false)
 
 export const createDirectories = async (paths: string[]): Promise<void> => {
-    const dirs = uniq(paths.map(p => dirname(p)))
-    const createDirs = dirs.map(d => createDirectory(d))
+    const allDirs = paths.map(p => p.substr(0, p.lastIndexOf('/')));
+    const uniqDirs = uniq(allDirs)
+    const createDirs = uniqDirs.map(d => createDirectory(d))
     await Promise.all(createDirs)
 }
 

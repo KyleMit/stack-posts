@@ -3,7 +3,7 @@
   "paths": {
     "answerCacheData": "./_site/data/answers.json",
     "questionCacheData": "./_site/data/questions.json",
-    "answerPostFolder": "./_site/posts/answers",
-    "questionPostFolder": "./_site/posts/questions"
+    "answerPostFolder": "./_site/posts/answers/",
+    "questionPostFolder": "./_site/posts/questions/"
   }
 }

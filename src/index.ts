@@ -10,11 +10,11 @@ async function main() {
   // create output directories
   await createDirectories(Object.values(config.paths))
 
-  const questions = await getQuestions()
-  const answers = await getAnswers()
+  // const questions = await getQuestions()
+  // const answers = await getAnswers()
 
-  await writeQuestionPostsCache(questions)
-  await writeAnswerPostsCache(answers)
+  // await writeQuestionPostsCache(questions)
+  // await writeAnswerPostsCache(answers)
 }
 
 const getAnswers = async (): Promise<Answer[]> => {
@@ -91,7 +91,7 @@ const writeAnswerPostsCache = async (answers: Answer[]): Promise<void> => {
 
 const writeQuestionPosts = async (questions: Question[]): Promise<void> => {
   const writeFiles = questions.map(async function (question) {
-    const path = `${config.paths.questionPostFolder}/${question.question_id}.md`
+    const path = `${config.paths.questionPostFolder}${question.question_id}.md`
 
     const { body_markdown, ...meta } = question
     const frontmatter = objToFrontmatter(meta)
@@ -105,7 +105,7 @@ const writeQuestionPosts = async (questions: Question[]): Promise<void> => {
 
 const writeAnswerPosts = async (answers: Answer[]): Promise<void> => {
   const writeFiles = answers.map(async function (answer) {
-    const path = `${config.paths.answerPostFolder}/${answer.answer_id}.md`
+    const path = `${config.paths.answerPostFolder}${answer.answer_id}.md`
 
     const { body_markdown, ...meta } = answer
     const frontmatter = objToFrontmatter(meta);
