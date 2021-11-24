@@ -1,27 +1,27 @@
-import { PostBase, PostBaseApi } from ".";
+import { IPostBase, IPostBaseApi } from ".";
 import { CreateMethod, epochToISO, Modify } from "../utils";
 
-export interface AnswerApi extends PostBaseApi {
+export interface IAnswerApi extends IPostBaseApi {
     question_id: number
     answer_id: number
     is_accepted: boolean
 }
 
-export interface Answer extends Modify<AnswerApi, {
+export interface IAnswer extends Modify<IAnswerApi, {
     creation_date: string
     last_activity_date: string
 }> {}
 
-export interface AnswerMeta extends Omit<Answer, 'body_markdown'> {}
+export interface IAnswerMeta extends Omit<IAnswer, 'body_markdown'> {}
 
-export const transformApiAnswers = (questions: AnswerApi[]): Answer[] => questions.map((a) => Answer.create({
+export const transformApiAnswers = (questions: IAnswerApi[]): IAnswer[] => questions.map((a) => Answer.create({
     ...a,
     creation_date: epochToISO(a.creation_date),
     last_activity_date: epochToISO(a.last_activity_date)
   }))
 
 
-const create: CreateMethod<Answer> = (args) => ({
+const create: CreateMethod<IAnswer> = (args) => ({
     question_id: args?.question_id ?? 0,
     answer_id: args?.answer_id ?? 0,
     score: args?.score ?? 0,

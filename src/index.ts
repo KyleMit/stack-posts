@@ -1,6 +1,6 @@
 import config from "./config.json"
 import { objToFrontmatter, createDirectories } from "./utils"
-import { Answer, PostBase, Question } from "./models"
+import { IAnswer, IPostBase, IQuestion } from "./models"
 import { getAnswersByUser, getQuestionsByUser } from "./apis/stack"
 import { fetchDataCached, writeFilesCached } from "./utils/cache"
 import { writePosts } from "./services/posts"
@@ -20,11 +20,11 @@ async function main() {
   await writeFilesCached(writeAnswerPosts, answers, config.paths.answerPostFolder)
 }
 
-const getAnswers = async (): Promise<Answer[]> => getAnswersByUser(config.userId)
-const getQuestions = async (): Promise<Question[]> => getQuestionsByUser(config.userId)
+const getAnswers = async (): Promise<IAnswer[]> => getAnswersByUser(config.userId)
+const getQuestions = async (): Promise<IQuestion[]> => getQuestionsByUser(config.userId)
 
-const writeQuestionPosts = async (questions: Question[]): Promise<void> =>
+const writeQuestionPosts = async (questions: IQuestion[]): Promise<void> =>
   writePosts(questions, (p) => `${config.paths.questionPostFolder}${p.question_id}.md`)
 
-const writeAnswerPosts = async (answers: Answer[]): Promise<void> =>
+const writeAnswerPosts = async (answers: IAnswer[]): Promise<void> =>
   writePosts(answers, (p) => `${config.paths.answerPostFolder}${p.answer_id}.md`)

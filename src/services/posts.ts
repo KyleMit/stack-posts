@@ -1,8 +1,8 @@
 import { promises as fsp } from "fs"
-import { PostBase } from "../models";
+import { IPostBase } from "../models";
 import { objToFrontmatter } from "../utils";
 
-export const writePosts = async <T extends PostBase>(posts: T[], postPath: (post: T) => string): Promise<void> => {
+export const writePosts = async <T extends IPostBase>(posts: T[], postPath: (post: T) => string): Promise<void> => {
     const writeFiles = posts.map(async function (post) {
         const path = postPath(post)
         const file = createMarkdownContents(post)
@@ -12,7 +12,7 @@ export const writePosts = async <T extends PostBase>(posts: T[], postPath: (post
     await Promise.all(writeFiles);
 }
 
-export const createMarkdownContents = (post: PostBase): string => {
+export const createMarkdownContents = (post: IPostBase): string => {
     const { body_markdown, ...meta } = post
     const frontmatter = objToFrontmatter(meta)
     const content = `${frontmatter}\n${body_markdown}`

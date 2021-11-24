@@ -1,16 +1,17 @@
 import {
-  Answer,
-  AnswerApi,
-  StackParams,
+  IAnswer,
+  IAnswerApi,
+  IStackParams,
   PARAM_FILTER,
   PARAM_ORDER,
   PARAM_SITE,
   PARAM_SORT,
-  Question,
-  QuestionApi,
-  ResponseBase,
+  IQuestion,
+  IQuestionApi,
+  IResponseBase,
   transformApiAnswers,
   transformApiQuestions,
+  StackParams,
 } from "../models"
 import { chunkArray, fetchJson, IEntry } from "../utils"
 import { URLSearchParams } from "url"
@@ -20,10 +21,10 @@ import { URLSearchParams } from "url"
  * Get Questions By ID
  * https://api.stackexchange.com/docs/questions-by-ids
  */
-export const getQuestionsById = async (userIds: number[]): Promise<QuestionApi[]> => {
+export const getQuestionsById = async (userIds: number[]): Promise<IQuestionApi[]> => {
   const questBase = `https://api.stackexchange.com/2.3/questions`
 
-  const questions = await fetchAllDataChunked<QuestionApi>(questBase, userIds)
+  const questions = await fetchAllDataChunked<IQuestionApi>(questBase, userIds)
 
   return questions
 }
@@ -32,10 +33,10 @@ export const getQuestionsById = async (userIds: number[]): Promise<QuestionApi[]
  * Questions by User
  * https://api.stackexchange.com/docs/questions-on-users
  */
-export const getQuestionsByUser = async (userId: number): Promise<Question[]> => {
+export const getQuestionsByUser = async (userId: number): Promise<IQuestion[]> => {
   const questBase = `https://api.stackexchange.com/2.3/users/${userId}/questions`
 
-  const questions = await fetchAllData<QuestionApi>(questBase)
+  const questions = await fetchAllData<IQuestionApi>(questBase)
   return transformApiQuestions(questions)
 }
 
@@ -43,19 +44,19 @@ export const getQuestionsByUser = async (userId: number): Promise<Question[]> =>
  * Answers by User
  * https://api.stackexchange.com/docs/answers-on-users
  */
-export const getAnswersByUser = async (userId: number): Promise<Answer[]> => {
+export const getAnswersByUser = async (userId: number): Promise<IAnswer[]> => {
   const ansUrl = `https://api.stackexchange.com/2.3/users/${userId}/answers`
 
-  const answers = await fetchAllData<AnswerApi>(ansUrl)
+  const answers = await fetchAllData<IAnswerApi>(ansUrl)
   return transformApiAnswers(answers)
 }
 
 
 
 
-const fetchAllData = async <T>(url: string, queryParams?: Partial<StackParams>): Promise<T[]> => {
+const fetchAllData = async <T>(url: string, queryParams?: Partial<IStackParams>): Promise<T[]> => {
   // declare placeholders
-  let resp: ResponseBase<T>
+  let resp: IResponseBase<T>
   const params = StackParams.create(queryParams);
   const items: T[] = []
 
@@ -65,7 +66,7 @@ const fetchAllData = async <T>(url: string, queryParams?: Partial<StackParams>):
     const queryUrl = `${url}?${queryString}`
 
     // query data
-    resp = await fetchJson<ResponseBase<T>>(queryUrl)
+    resp = await fetchJson<IResponseBase<T>>(queryUrl)
 
     // append to questions
     items.push(...resp.items)
@@ -77,7 +78,7 @@ const fetchAllData = async <T>(url: string, queryParams?: Partial<StackParams>):
   return items
 }
 
-const fetchAllDataChunked = async <T>(url: string, ids: number[], params?: Partial<StackParams>): Promise<T[]> => {
+const fetchAllDataChunked = async <T>(url: string, ids: number[], params?: Partial<IStackParams>): Promise<T[]> => {
   const idChunks = chunkArray(ids, 99)
 
   // make calls in a loop
@@ -86,7 +87,7 @@ const fetchAllDataChunked = async <T>(url: string, ids: number[], params?: Parti
     const queryUrl = `${url}${ids.join(';')}}?${queryString}`
 
     // query data
-    const resp = await fetchJson<ResponseBase<T>>(queryUrl)
+    const resp = await fetchJson<IResponseBase<T>>(queryUrl)
 
     return resp.items
   })
@@ -96,7 +97,7 @@ const fetchAllDataChunked = async <T>(url: string, ids: number[], params?: Parti
   return items
 }
 
-const UrlStackParams = (queryParams?: Partial<StackParams>): string => {
+const UrlStackParams = (queryParams?: Partial<IStackParams>): string => {
   const params = StackParams.create(queryParams);
   const entries = Object.entries(params).map<IEntry>(([key, val]) => [key, val.toString()])
   const url = new URLSearchParams(entries)

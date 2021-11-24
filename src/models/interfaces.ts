@@ -1,6 +1,6 @@
 import { Modify } from "../utils";
 
-export interface ResponseBase<T> {
+export interface IResponseBase<T> {
   has_more: boolean
   quota_max: number
   quota_remaining: number
@@ -10,14 +10,14 @@ export interface ResponseBase<T> {
   items: T[]
 }
 
-export interface PostBaseApi {
+export interface IPostBaseApi {
   score: number
   body_markdown: string
   creation_date: number
   last_activity_date: number
 }
 
-export interface PostBase extends Modify<PostBaseApi, {
+export interface IPostBase extends Modify<IPostBaseApi, {
   creation_date: string
   last_activity_date: string
 }> {}
