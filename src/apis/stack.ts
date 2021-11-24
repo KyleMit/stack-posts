@@ -1,12 +1,16 @@
 import {
+  Answer,
   AnswerApi,
   Params as StackParams,
   PARAM_FILTER,
   PARAM_ORDER,
   PARAM_SITE,
   PARAM_SORT,
+  Question,
   QuestionApi,
   ResponseBase,
+  transformApiAnswers,
+  transformApiQuestions,
 } from "../models"
 import { chunkArray, fetchJson, IEntry } from "../utils"
 import { URLSearchParams } from "url"
@@ -28,24 +32,22 @@ export const getQuestionsById = async (userIds: number[]): Promise<QuestionApi[]
  * Questions by User
  * https://api.stackexchange.com/docs/questions-on-users
  */
-export const getQuestionsByUser = async (userId: number): Promise<QuestionApi[]> => {
+export const getQuestionsByUser = async (userId: number): Promise<Question[]> => {
   const questBase = `https://api.stackexchange.com/2.3/users/${userId}/questions`
 
   const questions = await fetchAllData<QuestionApi>(questBase)
-
-  return questions
+  return transformApiQuestions(questions)
 }
 
 /**
  * Answers by User
  * https://api.stackexchange.com/docs/answers-on-users
  */
-export const getAnswersByUser = async (userId: number): Promise<AnswerApi[]> => {
+export const getAnswersByUser = async (userId: number): Promise<Answer[]> => {
   const ansUrl = `https://api.stackexchange.com/2.3/users/${userId}/answers`
 
   const answers = await fetchAllData<AnswerApi>(ansUrl)
-
-  return answers
+  return transformApiAnswers(answers)
 }
 
 const defaultOptions: StackParams = {

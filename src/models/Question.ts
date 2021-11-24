@@ -1,14 +1,11 @@
+import { PostBase, PostBaseApi } from ".";
 import { CreateMethod, epochToISO, Modify } from "../utils";
 
-export interface QuestionApi {
+export interface QuestionApi extends PostBaseApi {
     question_id: number
     accepted_answer_id?: number
     title: string
-    score: number
-    creation_date: number
-    last_activity_date: number
     tags: string[]
-    body_markdown: string
 }
 
 export interface Question extends Modify<QuestionApi, {
