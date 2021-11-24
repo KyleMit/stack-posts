@@ -1,7 +1,7 @@
 import { promises as fsp } from "fs"
 import config from "./config.json"
-import { epochToISO, checkFileExists, objToFrontmatter, createDirectories } from "./utils"
-import { Answer, AnswerApi, Question, QuestionApi } from "./models"
+import { epochToISO, checkFileExists, objToFrontmatter, createDirectories, getJsonData, writeJsonData, cacheFolderUpToDate } from "./utils"
+import { Answer, AnswerApi, Question, QuestionApi, transformApiAnswers, transformApiQuestions } from "./models"
 import { getAnswersByUser, getQuestionsByUser } from "./apis/stack"
 
 main()
@@ -10,82 +10,48 @@ async function main() {
   // create output directories
   await createDirectories(Object.values(config.paths))
 
-  // const questions = await getQuestions()
-  // const answers = await getAnswers()
+  const questions = await fetchDataWithCache(getQuestions, config.paths.questionCacheData)
+  const answers = await fetchDataWithCache(getAnswers, config.paths.answerCacheData)
 
-  // await writeQuestionPostsCache(questions)
-  // await writeAnswerPostsCache(answers)
+  const answerQuestionIds = answers.map(q => q.question_id)
+
+  await writeQuestionPostsCache(questions)
+  await writeAnswerPostsCache(answers)
 }
 
-const getAnswers = async (): Promise<Answer[]> => {
-  let answers: Answer[]
+const fetchDataWithCache = async <T>(fetchFunc: () => Promise<T>, cachePath: string, bustCache = false): Promise<T> => {
+  const cacheExists = await checkFileExists(cachePath)
 
-  const answersExist = await checkFileExists(config.paths.answerCacheData)
-
-  if (!answersExist) {
-    const answersApi = await getAnswersByUser(config.userId)
-    answers = transformAnswers(answersApi)
-    await setCacheData(answers, config.paths.answerCacheData)
+  if (cacheExists && !bustCache) {
+    const data = await getJsonData<T>(cachePath)
+    return data;
   } else {
-    answers = await getCacheData<Answer[]>(config.paths.answerCacheData)
+    const data = await fetchFunc()
+    await writeJsonData(data, cachePath)
+    return data;
   }
+}
 
+
+const getAnswers = async (): Promise<Answer[]> => {
+  const answersApi = await getAnswersByUser(config.userId)
+  const answers = transformApiAnswers(answersApi)
   return answers
 }
 
 const getQuestions = async (): Promise<Question[]> => {
-  let questions: Question[]
-
-  const questionsExist = await checkFileExists(config.paths.questionCacheData)
-
-  if (!questionsExist) {
-    const questionsApi = await getQuestionsByUser(config.userId)
-    questions = transformQuestions(questionsApi)
-    await setCacheData(questions, config.paths.questionCacheData)
-  } else {
-    questions = await getCacheData<Question[]>(config.paths.questionCacheData)
-  }
-
+  const questionsApi = await getQuestionsByUser(config.userId)
+  const questions = transformApiQuestions(questionsApi)
   return questions
 }
 
-const transformQuestions = (questions: QuestionApi[]): Question[] => questions.map((q) => Question.create({
-    ...q,
-    creation_date: epochToISO(q.creation_date),
-    last_activity_date: epochToISO(q.last_activity_date)
-}))
-
-const transformAnswers = (questions: AnswerApi[]): Answer[] => questions.map((a) => Answer.create({
-  ...a,
-  creation_date: epochToISO(a.creation_date),
-  last_activity_date: epochToISO(a.last_activity_date)
-}))
-
-const setCacheData = async (data: any, path: string): Promise<void> => {
-  const output = JSON.stringify(data, null, 2)
-  await fsp.writeFile(path, output, "utf-8")
-}
-const getCacheData = async <T>(path: string): Promise<T> => {
-  const text = await fsp.readFile(path, "utf-8")
-  const obj = JSON.parse(text) as T
-  return obj
-}
-
 const writeQuestionPostsCache = async (questions: Question[]): Promise<void> => {
-  const cachedPosts = await fsp.readdir(config.paths.questionPostFolder)
-  const simpleUpToDate = cachedPosts.length === questions.length
-
-  if (simpleUpToDate) return
-
+  if (await cacheFolderUpToDate(questions, config.paths.questionPostFolder)) return
   await writeQuestionPosts(questions)
 }
 
 const writeAnswerPostsCache = async (answers: Answer[]): Promise<void> => {
-  const cachedPosts = await fsp.readdir(config.paths.answerPostFolder)
-  const simpleUpToDate = cachedPosts.length === answers.length
-
-  if (simpleUpToDate) return
-
+  if (await cacheFolderUpToDate(answers, config.paths.answerPostFolder)) return
   await writeAnswerPosts(answers)
 }
 

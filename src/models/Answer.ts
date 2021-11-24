@@ -1,4 +1,4 @@
-import { CreateMethod, Modify } from "../utils";
+import { CreateMethod, epochToISO, Modify } from "../utils";
 
 export interface AnswerApi {
     question_id: number
@@ -16,6 +16,13 @@ export interface Answer extends Modify<AnswerApi, {
 }> {}
 
 export interface AnswerMeta extends Omit<Answer, 'body_markdown'> {}
+
+export const transformApiAnswers = (questions: AnswerApi[]): Answer[] => questions.map((a) => Answer.create({
+    ...a,
+    creation_date: epochToISO(a.creation_date),
+    last_activity_date: epochToISO(a.last_activity_date)
+  }))
+
 
 const create: CreateMethod<Answer> = (args) => ({
     question_id: args?.question_id ?? 0,

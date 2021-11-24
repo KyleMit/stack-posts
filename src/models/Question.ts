@@ -1,4 +1,4 @@
-import { CreateMethod, Modify } from "../utils";
+import { CreateMethod, epochToISO, Modify } from "../utils";
 
 export interface QuestionApi {
     question_id: number
@@ -17,6 +17,12 @@ export interface Question extends Modify<QuestionApi, {
 }> {}
 
 export interface QuestionMeta extends Omit<Question, 'body_markdown'> {}
+
+export const transformApiQuestions = (questions: QuestionApi[]): Question[] => questions.map((q) => Question.create({
+    ...q,
+    creation_date: epochToISO(q.creation_date),
+    last_activity_date: epochToISO(q.last_activity_date)
+}))
 
 const create: CreateMethod<Question> = (args) => ({
     question_id: args?.question_id ?? 0,

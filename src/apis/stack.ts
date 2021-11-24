@@ -8,19 +8,40 @@ import {
   QuestionApi,
   ResponseBase,
 } from "../models"
-import { fetchJson, IEntry } from "../utils"
+import { chunkArray, fetchJson, IEntry } from "../utils"
 import { URLSearchParams } from "url"
 
-export const getQuestionsByUser = async (userId: Number): Promise<QuestionApi[]> => {
-  const questBase = `https://api.stackexchange.com/2.2/users/${userId}/questions`
+
+/**
+ * Get Questions By ID
+ * https://api.stackexchange.com/docs/questions-by-ids
+ */
+export const getQuestionsById = async (userIds: number[]): Promise<QuestionApi[]> => {
+  const questBase = `https://api.stackexchange.com/2.3/questions`
+
+  const questions = await fetchAllDataChunked<QuestionApi>(questBase, userIds)
+
+  return questions
+}
+
+/**
+ * Questions by User
+ * https://api.stackexchange.com/docs/questions-on-users
+ */
+export const getQuestionsByUser = async (userId: number): Promise<QuestionApi[]> => {
+  const questBase = `https://api.stackexchange.com/2.3/users/${userId}/questions`
 
   const questions = await fetchAllData<QuestionApi>(questBase)
 
   return questions
 }
 
-export const getAnswersByUser = async (userId: Number): Promise<AnswerApi[]> => {
-  const ansUrl = `https://api.stackexchange.com/2.2/users/${userId}/answers`
+/**
+ * Answers by User
+ * https://api.stackexchange.com/docs/answers-on-users
+ */
+export const getAnswersByUser = async (userId: number): Promise<AnswerApi[]> => {
+  const ansUrl = `https://api.stackexchange.com/2.3/users/${userId}/answers`
 
   const answers = await fetchAllData<AnswerApi>(ansUrl)
 
@@ -36,12 +57,10 @@ const defaultOptions: StackParams = {
   filter: PARAM_FILTER.shallow,
 }
 
-// type IFetchData<T> = (url: string, params: StackParams) => Promise<T[]>
-
 const fetchAllData = async <T>(url: string, params: StackParams = defaultOptions): Promise<T[]> => {
   // declare placeholders
   let resp: ResponseBase<T>
-  const questions: T[] = []
+  const items: T[] = []
 
   // make calls in a loop
   do {
@@ -52,13 +71,32 @@ const fetchAllData = async <T>(url: string, params: StackParams = defaultOptions
     resp = await fetchJson<ResponseBase<T>>(queryUrl)
 
     // append to questions
-    questions.push(...resp.items)
+    items.push(...resp.items)
 
     // increment page counter as number
     params.page += 1
   } while (resp.has_more)
 
-  return questions
+  return items
+}
+
+const fetchAllDataChunked = async <T>(url: string, ids: number[], params: StackParams = defaultOptions): Promise<T[]> => {
+  const idChunks = chunkArray(ids, 99)
+
+  // make calls in a loop
+  const requests = idChunks.map(async (ids: number[]) => {
+    const queryString = UrlStackParams(params)
+    const queryUrl = `${url}${ids.join(';')}}?${queryString}`
+
+    // query data
+    const resp = await fetchJson<ResponseBase<T>>(queryUrl)
+
+    return resp.items
+  })
+
+  const responses = await Promise.all(requests)
+  const items = responses.flat()
+  return items
 }
 
 const UrlStackParams = (params: StackParams): string => {
