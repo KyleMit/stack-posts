@@ -1,17 +1,13 @@
 import config from "../config.json"
-import { createDirectories, getJsonData } from "../utils"
-import { getAnswersById, getAnswersByUser, getQuestionsById, getQuestionsByUser } from "../apis/stack"
-import { fetchDataCached, writePostsCached } from "../utils/cache"
-import { IAnswer, IQuestion } from "../models"
+import { createDirectories, writePostsCached } from "../utils"
+import { fetchData } from "."
 
 
-export const writePosts = async() => {
+
+export const writeMarkdown = async() => {
   await createDirectories(Object.values(config.paths))
 
-  const questions = await getJsonData<IQuestion[]>(config.paths.questionCacheData)
-  const answers = await getJsonData<IAnswer[]>(config.paths.answerCacheData)
-  const questionAlts = await getJsonData<IQuestion[]>(config.paths.questionAltCacheData)
-  const answerAlts = await getJsonData<IAnswer[]>(config.paths.answerAltCacheData)
+  const { questions,  answers,  questionAlts,  answerAlts, users } = await fetchData()
 
   // write posts
   await writePostsCached(questions, config.paths.questionPostFolder, (p) => `${config.paths.questionPostFolder}${p.question_id}.md`)

@@ -1,5 +1,5 @@
 import { Modify } from "../utils";
-import { IUserBase } from ".";
+import { IAnswer, IQuestion, IUser, IUserBase } from ".";
 
 export interface IResponseBase<T> {
   has_more: boolean
@@ -23,3 +23,11 @@ export interface IPostBase extends Modify<IPostBaseApi, {
   creation_date: string
   last_activity_date: string
 }> {}
+
+export interface IFetchedData {
+  questions: IQuestion[];
+  answers: IAnswer[];
+  questionAlts: IQuestion[];
+  answerAlts: IAnswer[];
+  users: IUser[];
+}

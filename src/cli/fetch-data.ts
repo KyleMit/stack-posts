@@ -1,10 +1,10 @@
 import config from "../config.json"
-import { createDirectories, isNumber, uniq } from "../utils"
+import { createDirectories, isNumber, uniq, fetchDataCached } from "../utils"
 import { getAnswersById, getAnswersByUser, getQuestionsById, getQuestionsByUser, getUsersById } from "../apis/stack"
-import { fetchDataCached } from "../utils/cache"
+import { IFetchedData } from "../models"
 
 
-export const fetchData = async() => {
+export const fetchData = async(): Promise<IFetchedData> => {
   await createDirectories(Object.values(config.paths))
 
   const questions = await fetchDataCached(() => getQuestionsByUser(config.userId), config.paths.questionCacheData)
@@ -19,5 +19,13 @@ export const fetchData = async() => {
   const allPosts = [...questions, ...answers, ...questionAlts, ...answerAlts]
   const userIds = uniq(allPosts.map(p => p.owner.user_id).filter(isNumber))
 
-  const _users = await fetchDataCached(() => getUsersById(userIds), config.paths.userCacheData)
+  const users = await fetchDataCached(() => getUsersById(userIds), config.paths.userCacheData)
+
+  return {
+    questions,
+    answers,
+    questionAlts,
+    answerAlts,
+    users
+  }
 }
