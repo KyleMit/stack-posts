@@ -27,7 +27,7 @@ export default function Home({allPosts} : IHomeProps) {
         <ul className={utilStyles.list}>
           {allPosts.map(({ id }) => (
             <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
+              <Link href={`/p/${id}`}>
                 <a>{id}</a>
               </Link>
               <br />
