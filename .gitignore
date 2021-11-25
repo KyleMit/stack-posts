@@ -118,3 +118,5 @@ dist
 
 # Site
 _site
+_cache
+posts
