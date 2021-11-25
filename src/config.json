@@ -6,7 +6,9 @@
     "answerAltCacheData": "./_site/data/answers-alt.json",
     "questionAltCacheData": "./_site/data/questions-alt.json",
     "userCacheData": "./_site/data/users.json",
-    "answerPostFolder": "./_site/posts/answers/",
-    "questionPostFolder": "./_site/posts/questions/"
+    "answerPostFolder": "./_site/posts/mine/answers/",
+    "questionPostFolder": "./_site/posts/mine/questions/",
+    "answerAltPostFolder": "./_site/posts/alt/answers/",
+    "questionAltPostFolder": "./_site/posts/alt/questions/"
   }
 }

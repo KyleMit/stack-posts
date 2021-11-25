@@ -1,13 +1,10 @@
 import config from "./config.json"
 import { createDirectories, isNumber, uniq } from "./utils"
-import { IAnswer, IPostBase, IQuestion } from "./models"
 import { getAnswersById, getAnswersByUser, getQuestionsById, getQuestionsByUser, getUsersById } from "./apis/stack"
-import { fetchDataCached, writeFilesCached } from "./utils/cache"
-import { writePosts } from "./services/posts"
+import { fetchDataCached, writePostsCached } from "./utils/cache"
 
 
 export const main = async() => {
-  // create output directories
   await createDirectories(Object.values(config.paths))
 
   const questions = await fetchDataCached(() => getQuestionsByUser(config.userId), config.paths.questionCacheData)
@@ -19,17 +16,14 @@ export const main = async() => {
   const questionAlts = await fetchDataCached(() => getQuestionsById(questionAltIds), config.paths.questionAltCacheData)
   const answerAlts = await fetchDataCached(() => getAnswersById(answerAltIds), config.paths.answerAltCacheData)
 
-  const userIds = getUsersIds([...questions, ...answers, ...questionAlts, ...answerAlts])
+  const allPosts = [...questions, ...answers, ...questionAlts, ...answerAlts]
+  const userIds = uniq(allPosts.map(p => p.owner.user_id).filter(isNumber))
   const users = await fetchDataCached(() => getUsersById(userIds), config.paths.userCacheData)
 
-  // await writeFilesCached(writeQuestionPosts, questions, config.paths.questionPostFolder)
-  // await writeFilesCached(writeAnswerPosts, answers, config.paths.answerPostFolder)
+  // write posts
+  await writePostsCached(questions, config.paths.questionPostFolder, (p) => `${config.paths.questionPostFolder}${p.question_id}.md`)
+  await writePostsCached(answers, config.paths.answerPostFolder, (p) => `${config.paths.answerPostFolder}${p.answer_id}.md`)
+
+  await writePostsCached(questionAlts, config.paths.questionAltPostFolder, (p) => `${config.paths.questionAltPostFolder}${p.question_id}.md`)
+  await writePostsCached(answerAlts, config.paths.answerAltPostFolder, (p) => `${config.paths.answerAltPostFolder}${p.answer_id}.md`)
 }
-
-const getUsersIds = (posts: IPostBase[]): number[] => uniq(posts.map(p => p.owner.user_id).filter(isNumber))
-
-const writeQuestionPosts = async (questions: IQuestion[]): Promise<void> =>
-  writePosts(questions, (p) => `${config.paths.questionPostFolder}${p.question_id}.md`)
-
-const writeAnswerPosts = async (answers: IAnswer[]): Promise<void> =>
-  writePosts(answers, (p) => `${config.paths.answerPostFolder}${p.answer_id}.md`)
