@@ -20,7 +20,18 @@ export interface IPostData {
     question: IQuestion
 }
 
-const postsDirectory = path.join(process.cwd(), 'posts/mine/answers')
+const postsDirectory = path.join(process.cwd(), 'posts')
+
+export function getAllPostIds() {
+    const fileNames = fs.readdirSync(postsDirectory)
+    return fileNames.map(fileName => {
+      return {
+        params: {
+          id: fileName.replace(/\.md$/, '')
+        }
+      }
+    })
+  }
 
 export function getSortedPostsData() {
   // Get file names under /posts
@@ -52,16 +63,7 @@ export function getSortedPostsData() {
   })
 }
 
-export function getAllPostIds() {
-  const fileNames = fs.readdirSync(postsDirectory)
-  return fileNames.map(fileName => {
-    return {
-      params: {
-        id: fileName.replace(/\.md$/, '')
-      }
-    }
-  })
-}
+
 
 export async function getPostData(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`)

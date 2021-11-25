@@ -1,4 +1,4 @@
-import { fetchData, writeMarkdown, writeSite } from "./cli";
+import { fetchData, writeMarkdown } from "./cli";
 
 enum Commands {
     fetch = "fetch",

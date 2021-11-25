@@ -1,4 +1,4 @@
-import config from "../config.json"
+import config from "../config"
 import { createDirectories, writePostsCached } from "../utils"
 import { fetchData } from "."
 
