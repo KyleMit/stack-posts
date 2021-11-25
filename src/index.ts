@@ -1,13 +1,21 @@
-import { fetchData, writeMarkdown } from "./cli";
+import { fetchData, writeMarkdown, writeSite } from "./cli";
 
 
 const main = async () => {
     const args = process.argv.slice(2);
     const [ command ] = args;
-    if (command === 'fetch') {
-        await fetchData();
-    } else if (command === 'markdown') {
-        await writeMarkdown();
+    switch (command) {
+        case "fetch":
+            await fetchData();
+            break;
+
+        case "markdown":
+            await writeMarkdown();
+            break;
+
+        case "site":
+            await writeSite();
+            break;
     }
 }
 
