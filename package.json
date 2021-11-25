@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "fetch": "ts-node src/index.ts fetch",
-    "markdown": "ts-node src/index.ts markdown",
-    "site": "ts-node src/index.ts site"
+    "fetch": "ts-node lib/index.ts fetch",
+    "markdown": "ts-node lib/index.ts markdown"
   },
   "keywords": [],
   "author": "",

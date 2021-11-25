@@ -1,21 +1,24 @@
 import { fetchData, writeMarkdown, writeSite } from "./cli";
 
+enum Commands {
+    fetch = "fetch",
+    markdown = "markdown"
+}
 
 const main = async () => {
     const args = process.argv.slice(2);
     const [ command ] = args;
     switch (command) {
-        case "fetch":
+        case Commands.fetch:
             await fetchData();
             break;
 
-        case "markdown":
+        case Commands.markdown:
             await writeMarkdown();
             break;
 
-        case "site":
-            await writeSite();
-            break;
+        default:
+            console.log(`You typed '${command}'. \nThe only available commands are ${Object.values(Commands).join(", ")}`)
     }
 }
 
