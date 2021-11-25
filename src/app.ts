@@ -1,7 +1,7 @@
 import config from "./config.json"
-import { createDirectories } from "./utils"
+import { createDirectories, isNumber } from "./utils"
 import { IAnswer, IQuestion } from "./models"
-import { getAnswersByUser, getQuestionsByUser } from "./apis/stack"
+import { getAnswersById, getAnswersByUser, getQuestionsById, getQuestionsByUser } from "./apis/stack"
 import { fetchDataCached, writeFilesCached } from "./utils/cache"
 import { writePosts } from "./services/posts"
 
@@ -10,17 +10,19 @@ export const main = async() => {
   // create output directories
   await createDirectories(Object.values(config.paths))
 
-  const questions = await fetchDataCached(getQuestions, config.paths.questionCacheData)
-  const answers = await fetchDataCached(getAnswers, config.paths.answerCacheData)
+  const questions = await fetchDataCached(() => getQuestionsByUser(config.userId), config.paths.questionCacheData)
+  const answers = await fetchDataCached(() => getAnswersByUser(config.userId), config.paths.answerCacheData)
 
-  const answerQuestionIds = answers.map(q => q.question_id)
+  const answerAltIds = answers.map(a => a.question_id)
+  const questionAltIds = questions.map(q => q.accepted_answer_id).filter(isNumber)
 
-  await writeFilesCached(writeQuestionPosts, questions, config.paths.questionPostFolder)
-  await writeFilesCached(writeAnswerPosts, answers, config.paths.answerPostFolder)
+  const answerCompliments = await fetchDataCached(() => getQuestionsById(answerAltIds), config.paths.questionAltCacheData)
+  const questionCompliments = await fetchDataCached(() => getAnswersById(questionAltIds), config.paths.answerAltCacheData)
+
+  // await writeFilesCached(writeQuestionPosts, questions, config.paths.questionPostFolder)
+  // await writeFilesCached(writeAnswerPosts, answers, config.paths.answerPostFolder)
 }
 
-const getAnswers = async (): Promise<IAnswer[]> => getAnswersByUser(config.userId)
-const getQuestions = async (): Promise<IQuestion[]> => getQuestionsByUser(config.userId)
 
 const writeQuestionPosts = async (questions: IQuestion[]): Promise<void> =>
   writePosts(questions, (p) => `${config.paths.questionPostFolder}${p.question_id}.md`)

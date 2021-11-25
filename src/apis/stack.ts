@@ -17,12 +17,22 @@ import { URLSearchParams } from "url"
  * Get Questions By ID
  * https://api.stackexchange.com/docs/questions-by-ids
  */
-export const getQuestionsById = async (userIds: number[]): Promise<IQuestionApi[]> => {
+export const getQuestionsById = async (questionIds: number[]): Promise<IQuestion[]> => {
   const questBase = `https://api.stackexchange.com/2.3/questions`
 
-  const questions = await fetchAllDataChunked<IQuestionApi>(questBase, userIds)
+  const questions = await fetchAllDataChunked<IQuestionApi>(questBase, questionIds)
+  return transformApiQuestions(questions)
+}
 
-  return questions
+/**
+ * Get Answers By ID
+ * https://api.stackexchange.com/docs/answers-by-ids
+ */
+ export const getAnswersById = async (userIds: number[]): Promise<IAnswer[]> => {
+  const answBase = `https://api.stackexchange.com/2.3/answers`
+
+  const answers = await fetchAllDataChunked<IAnswerApi>(answBase, userIds)
+  return transformApiAnswers(answers)
 }
 
 /**
