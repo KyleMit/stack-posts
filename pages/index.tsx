@@ -11,19 +11,20 @@ interface IHomeProps {
 }
 export default function Home({allPosts} : IHomeProps) {
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>StackOverflow.Kyle</p>
         <p>
           An offline, searchable, personalized copy of{' '}
-          <a href="https://stackoverflow.com/">StackOverflow</a>
+          <a href="https://stackoverflow.com/users/1366033/kylemit">
+            StackOverflow
+          </a>
         </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <h2 className={utilStyles.headingLg}>Posts</h2>
         <ul className={utilStyles.list}>
           {allPosts.map(({ id }) => (
             <li className={utilStyles.listItem} key={id}>
