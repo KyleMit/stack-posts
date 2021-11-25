@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "fetch": "ts-node lib/index.ts fetch",
     "markdown": "ts-node lib/index.ts markdown"
   },
@@ -13,12 +16,18 @@
   "license": "ISC",
   "dependencies": {
     "js-yaml": "^3.14.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "next": "12.0.4",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^14.11.2",
     "@types/node-fetch": "^2.5.7",
+    "@types/react": "17.0.37",
+    "eslint": "7",
+    "eslint-config-next": "12.0.4",
     "nodemon": "^2.0.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
