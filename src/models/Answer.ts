@@ -1,4 +1,4 @@
-import { IPostBase, IPostBaseApi } from ".";
+import { IPostBaseApi, UserBase } from ".";
 import { CreateMethod, epochToISO, Modify } from "../utils";
 
 export interface IAnswerApi extends IPostBaseApi {
@@ -28,7 +28,8 @@ const create: CreateMethod<IAnswer> = (args) => ({
     is_accepted: args?.is_accepted ?? false,
     creation_date: args?.creation_date ?? '',
     last_activity_date: args?.last_activity_date ?? '',
-    body_markdown:  args?.body_markdown ?? ''
+    body_markdown:  args?.body_markdown ?? '',
+    owner: args?.owner ?? UserBase.create()
 })
 
 export const Answer = {

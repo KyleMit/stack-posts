@@ -8,6 +8,10 @@ import {
   transformApiAnswers,
   transformApiQuestions,
   StackParams,
+  PARAM_FILTER,
+  transformApiUsers,
+  IUser,
+  IUserApi,
 } from "../models"
 import { chunkArray, fetchJson, IEntry } from "../utils"
 import { URLSearchParams } from "url"
@@ -17,8 +21,20 @@ import { URLSearchParams } from "url"
  * Get Questions By ID
  * https://api.stackexchange.com/docs/questions-by-ids
  */
+ export const getUsersById = async (userIds: number[]): Promise<IUser[]> => {
+  const userBase = `https://api.stackexchange.com/2.3/users/`
+
+  const users = await fetchAllDataChunked<IUserApi>(userBase, userIds, {filter: PARAM_FILTER.userShallow})
+  return transformApiUsers(users)
+}
+
+
+/**
+ * Get Questions By ID
+ * https://api.stackexchange.com/docs/questions-by-ids
+ */
 export const getQuestionsById = async (questionIds: number[]): Promise<IQuestion[]> => {
-  const questBase = `https://api.stackexchange.com/2.3/questions`
+  const questBase = `https://api.stackexchange.com/2.3/questions/`
 
   const questions = await fetchAllDataChunked<IQuestionApi>(questBase, questionIds)
   return transformApiQuestions(questions)
@@ -28,10 +44,10 @@ export const getQuestionsById = async (questionIds: number[]): Promise<IQuestion
  * Get Answers By ID
  * https://api.stackexchange.com/docs/answers-by-ids
  */
- export const getAnswersById = async (userIds: number[]): Promise<IAnswer[]> => {
-  const answBase = `https://api.stackexchange.com/2.3/answers`
+ export const getAnswersById = async (answerIds: number[]): Promise<IAnswer[]> => {
+  const answBase = `https://api.stackexchange.com/2.3/answers/`
 
-  const answers = await fetchAllDataChunked<IAnswerApi>(answBase, userIds)
+  const answers = await fetchAllDataChunked<IAnswerApi>(answBase, answerIds)
   return transformApiAnswers(answers)
 }
 
@@ -90,7 +106,7 @@ const fetchAllDataChunked = async <T>(url: string, ids: number[], params?: Parti
   // make calls in a loop
   const requests = idChunks.map(async (ids: number[]) => {
     const queryString = UrlStackParams(params)
-    const queryUrl = `${url}${ids.join(';')}}?${queryString}`
+    const queryUrl = `${url}${ids.join(';')}?${queryString}`
 
     // query data
     const resp = await fetchJson<IResponseBase<T>>(queryUrl)

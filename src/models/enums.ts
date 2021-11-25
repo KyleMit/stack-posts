@@ -24,5 +24,6 @@ export enum PARAM_FILTER {
   default = "default",
   withbody = "withbody",
   total = "total",
-  shallow = "*I6kVOgAG3VAp35OqFW2FpKDCdyq)WBEv)NpyrRZAt)K",
+  shallow = "8.gkVZ5JSxgdN59CGV4N-iFxZv9uUm8eFIr9lD2_AM2O7ohYVmY*Xj)-YDjCh(7rqfQiUIS",
+  userShallow = "!LnNkvq0X7-EX3K8gIc25TI"
 }

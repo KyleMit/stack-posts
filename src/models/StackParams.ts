@@ -15,7 +15,7 @@ const create: CreateMethod<IStackParams> = (args) => ({
     page: args?.page ?? 1,
     pagesize: args?.pagesize ?? 100,
     order: args?.order ?? PARAM_ORDER.desc,
-    sort: args?.sort ?? PARAM_SORT.activity,
+    sort: args?.sort ?? PARAM_SORT.creation,
     site: args?.site ?? PARAM_SITE.stackoverflow,
     filter: args?.filter ?? PARAM_FILTER.shallow,
 })
