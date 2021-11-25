@@ -1,8 +1,24 @@
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
+import matter, { GrayMatterFile } from 'gray-matter'
 import { remark } from 'remark'
 import html from 'remark-html'
+import { Modify } from './utils'
+import { IAnswer, IQuestion } from './models'
+
+interface AnswerMatter extends Modify<GrayMatterFile<string>, {
+    data: IAnswer
+}> {}
+
+interface QuestionMatter extends Modify<GrayMatterFile<string>, {
+    data: IQuestion
+}> {}
+
+export interface IPostData {
+    id: number,
+    answer: IAnswer,
+    question: IQuestion
+}
 
 const postsDirectory = path.join(process.cwd(), 'posts/mine/answers')
 
@@ -18,17 +34,17 @@ export function getSortedPostsData() {
     const fileContents = fs.readFileSync(fullPath, 'utf8')
 
     // Use gray-matter to parse the post metadata section
-    const matterResult = matter(fileContents)
+    const matterResult = matter(fileContents) as AnswerMatter
 
     // Combine the data with the id
     return {
       id,
-      ...(matterResult.data as { date: string; title: string })
+      ...matterResult.data
     }
   })
   // Sort posts by date
   return allPostsData.sort((a, b) => {
-    if (a.date < b.date) {
+    if (a.answer_id < b.answer_id) {
       return 1
     } else {
       return -1
@@ -52,7 +68,7 @@ export async function getPostData(id: string) {
   const fileContents = fs.readFileSync(fullPath, 'utf8')
 
   // Use gray-matter to parse the post metadata section
-  const matterResult = matter(fileContents)
+  const matterResult = matter(fileContents) as AnswerMatter
 
   // Use remark to convert markdown into HTML string
   const processedContent = await remark()
@@ -64,6 +80,6 @@ export async function getPostData(id: string) {
   return {
     id,
     contentHtml,
-    ...(matterResult.data as { date: string; title: string })
+    ...matterResult.data
   }
 }
