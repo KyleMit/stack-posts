@@ -7,22 +7,21 @@ Personalized Local Copy of Stack Overflow
 [Questions on Users](https://api.stackexchange.com/docs/questions-on-users#page=1&pagesize=100&order=desc&sort=activity&ids=1366033&filter=!WXi8jmdCDBo_r-QTD3GFmuOlWj4Js-SxyFKgGyu&site=stackoverflow&run=true)
 
 
-## Features
-
-* Download unsafe HTML
-* Download All Questions
-  * Plus accepted answer
-* Download All Answers
-  * Plus prompting question
-* Download All users metadata
-* Generate Markdown Files w/ Frontmatter
-* Build site with **awesome** search 🚀
-* Run Weekly Update via Github Actions
-* R2
-  * All posts you've voted on
-
 ## Todo
 
+* Use [Stacks](https://stackoverflow.design/)
+* Improve Syntax Highlighting
+* Add code copy button
+* Fix Heading levels from markdown 1,2,3 -> 4,5,6
+* Build site with **awesome** search 🚀
+* Add tags view
+* Run Weekly Update via Github Actions
+* R2
+  * All posts you've
+    * voted on
+    * favorited
+    * bountied
+    * ... are generally interested in
 * Cache bust param?
 
 
