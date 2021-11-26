@@ -1,17 +1,12 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
+import layoutStyles from '../styles/layout.module.css';
 
 const name = 'Kyle Mitofsky'
 export const siteTitle = 'StackPosts.Kyle'
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const Layout: React.FC = ({ children }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -29,8 +24,10 @@ export default function Layout({
           </Link>
         </h1>
       </header>
-      <main>{children}</main>
-      <footer>
+      <main className={layoutStyles.main}>
+        {children}
+      </main>
+      <footer className={layoutStyles.footer}>
         <a href="https://github.com/KyleMit/stack-posts">
           Source on Github
         </a>
@@ -38,3 +35,5 @@ export default function Layout({
     </div>
   )
 }
+
+export default Layout
