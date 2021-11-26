@@ -1,6 +1,6 @@
 import { promises as fsp } from "fs"
+import matter from 'gray-matter'
 import { IPostBase } from "../models";
-import { objToFrontmatter } from "../utils";
 
 export const writePosts = async <T extends IPostBase>(posts: T[], postPath: (post: T) => string): Promise<void> => {
     const writeFiles = posts.map(async function (post) {
@@ -14,8 +14,7 @@ export const writePosts = async <T extends IPostBase>(posts: T[], postPath: (pos
 
 export const createMarkdownContents = (post: IPostBase): string => {
     const { body_markdown, ...meta } = post
-    const frontmatter = objToFrontmatter(meta)
-    const content = `${frontmatter}\n${body_markdown}`
+    const content = matter.stringify(body_markdown, meta)
     return content;
 }
 
