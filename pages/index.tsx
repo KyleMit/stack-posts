@@ -1,13 +1,14 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData, IPostData } from '../lib/posts'
+import { getAllPostIds, getAllPosts } from '../lib/posts'
 import Link from 'next/link'
 import Date from '../components/date'
 import { GetStaticProps } from 'next'
+import { IPost } from '../lib/cli'
 
 interface IHomeProps {
-  allPosts: IPostData[]
+  allPosts: IPost[]
 }
 export default function Home({allPosts} : IHomeProps) {
   return (
@@ -26,10 +27,10 @@ export default function Home({allPosts} : IHomeProps) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Posts</h2>
         <ul className={utilStyles.list}>
-          {allPosts.map(({ id }) => (
+          {allPosts.map(({ id, q, a }) => (
             <li className={utilStyles.listItem} key={id}>
               <Link href={`/p/${id}`}>
-                <a>{id}</a>
+                <a>{q?.data?.title}</a>
               </Link>
               <br />
               <small className={utilStyles.lightText}>
@@ -44,7 +45,7 @@ export default function Home({allPosts} : IHomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPosts = getSortedPostsData()
+  const allPosts = await getAllPosts()
   return {
     props: {
       allPosts

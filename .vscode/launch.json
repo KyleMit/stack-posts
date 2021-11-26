@@ -9,6 +9,29 @@
       "program": "${workspaceFolder}/src/index.ts",
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "skipFiles": ["<node_internals>/**"]
-    }
+    },
+    {
+      "name": "Current TS File",
+      "type": "node",
+      "request": "launch",
+      "args": ["${relativeFile}"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+  },
+  {
+    "name": "Example",
+    "type": "node",
+    "request": "launch",
+    "runtimeExecutable": "node",
+    "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+
+    "args": ["lib/index.ts", "posts"],
+
+    "cwd": "${workspaceRoot}",
+    "internalConsoleOptions": "openOnSessionStart",
+    "skipFiles": ["<node_internals>/**", "node_modules/**"]
+  }
   ]
 }

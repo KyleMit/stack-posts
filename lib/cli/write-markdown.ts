@@ -5,14 +5,14 @@ import { fetchData } from "."
 
 
 export const writeMarkdown = async() => {
-  await createDirectories(Object.values(config.paths))
+  await createDirectories(Object.values(config.posts))
 
   const { questions,  answers,  questionAlts,  answerAlts, users } = await fetchData()
 
   // write posts
-  await writePostsCached(questions, config.paths.questionPostFolder, (p) => `${config.paths.questionPostFolder}${p.question_id}.md`)
-  await writePostsCached(answers, config.paths.answerPostFolder, (p) => `${config.paths.answerPostFolder}${p.answer_id}.md`)
+  await writePostsCached(questions, config.posts.questionPost, (p) => `${config.posts.questionPost}${p.question_id}.md`)
+  await writePostsCached(answers, config.posts.answerPost, (p) => `${config.posts.answerPost}${p.answer_id}.md`)
 
-  await writePostsCached(questionAlts, config.paths.questionAltPostFolder, (p) => `${config.paths.questionAltPostFolder}${p.question_id}.md`)
-  await writePostsCached(answerAlts, config.paths.answerAltPostFolder, (p) => `${config.paths.answerAltPostFolder}${p.answer_id}.md`)
+  await writePostsCached(questionAlts, config.posts.questionAltPost, (p) => `${config.posts.questionAltPost}${p.question_id}.md`)
+  await writePostsCached(answerAlts, config.posts.answerAltPost, (p) => `${config.posts.answerAltPost}${p.answer_id}.md`)
 }

@@ -1,8 +1,9 @@
-import { fetchData, writeMarkdown } from "./cli";
+import { fetchData, getPostsCached, writeMarkdown } from "./cli";
 
 enum Commands {
     fetch = "fetch",
-    markdown = "markdown"
+    markdown = "markdown",
+    posts = "posts"
 }
 
 const main = async () => {
@@ -15,6 +16,10 @@ const main = async () => {
 
         case Commands.markdown:
             await writeMarkdown();
+            break;
+
+        case Commands.posts:
+            await getPostsCached();
             break;
 
         default:

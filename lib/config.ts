@@ -1,16 +1,43 @@
-const config = {
+export interface IPostPaths {
+  answerPost: string;
+  questionPost: string;
+  answerAltPost: string;
+  questionAltPost: string;
+}
+
+export interface ICachePaths {
+  answerData: string;
+  questionData: string;
+  answerAltData: string;
+  questionAltData: string;
+  userData: string;
+  postData: string;
+}
+
+export interface IConfigData {
+  userId: number;
+  cache: ICachePaths;
+  posts: IPostPaths;
+}
+
+const config: IConfigData = {
   userId: 1366033,
-  paths: {
-    answerCacheData: "./_cache/answers-mine.json",
-    questionCacheData: "./_cache/questions-mine.json",
-    answerAltCacheData: "./_cache/answers-alt.json",
-    questionAltCacheData: "./_cache/questions-alt.json",
-    userCacheData: "./_cache/users.json",
-    answerPostFolder: "./posts/mine/answers/",
-    questionPostFolder: "./posts/mine/questions/",
-    answerAltPostFolder: "./posts/alt/answers/",
-    questionAltPostFolder: "./posts/alt/questions/"
+  cache: {
+    answerData: "./_cache/answers-mine.json",
+    questionData: "./_cache/questions-mine.json",
+    answerAltData: "./_cache/answers-alt.json",
+    questionAltData: "./_cache/questions-alt.json",
+    userData: "./_cache/users.json",
+    postData: "./_cache/posts.json",
+
+  },
+  posts: {
+    answerPost: "./posts/mine/answers/",
+    questionPost: "./posts/mine/questions/",
+    answerAltPost: "./posts/alt/answers/",
+    questionAltPost: "./posts/alt/questions/"
   }
-} as const
+
+}
 
 export default config

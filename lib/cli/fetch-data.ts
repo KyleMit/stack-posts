@@ -5,21 +5,21 @@ import { IFetchedData } from "../models"
 
 
 export const fetchData = async(): Promise<IFetchedData> => {
-  await createDirectories(Object.values(config.paths))
+  await createDirectories(Object.values(config.cache))
 
-  const questions = await fetchDataCached(() => getQuestionsByUser(config.userId), config.paths.questionCacheData)
-  const answers = await fetchDataCached(() => getAnswersByUser(config.userId), config.paths.answerCacheData)
+  const questions = await fetchDataCached(() => getQuestionsByUser(config.userId), config.cache.questionData)
+  const answers = await fetchDataCached(() => getAnswersByUser(config.userId), config.cache.answerData)
 
   const questionAltIds = answers.map(a => a.question_id)
   const answerAltIds = questions.map(q => q.accepted_answer_id).filter(isNumber)
 
-  const questionAlts = await fetchDataCached(() => getQuestionsById(questionAltIds), config.paths.questionAltCacheData)
-  const answerAlts = await fetchDataCached(() => getAnswersById(answerAltIds), config.paths.answerAltCacheData)
+  const questionAlts = await fetchDataCached(() => getQuestionsById(questionAltIds), config.cache.questionAltData)
+  const answerAlts = await fetchDataCached(() => getAnswersById(answerAltIds), config.cache.answerAltData)
 
   const allPosts = [...questions, ...answers, ...questionAlts, ...answerAlts]
   const userIds = uniq(allPosts.map(p => p.owner.user_id).filter(isNumber))
 
-  const users = await fetchDataCached(() => getUsersById(userIds), config.paths.userCacheData)
+  const users = await fetchDataCached(() => getUsersById(userIds), config.cache.userData)
 
   return {
     questions,
