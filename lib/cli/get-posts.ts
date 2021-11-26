@@ -4,6 +4,7 @@ import matter, { GrayMatterFile } from 'gray-matter'
 import { objMapValues, Modify, objMapValuesAsync, fetchDataCached } from '../utils'
 import { IAnswer, IQuestion } from '../models'
 import config from '../config'
+import { convertMarkdownToHtml } from '../utils/markdown'
 
 
 export interface GrayMatterInfo extends Pick<GrayMatterFile<string>, 'content' | 'data'> {}
@@ -35,7 +36,11 @@ export const getPosts = async (): Promise<Record<string, IPost>> => {
             const fileContents = await fsp.readFile(fullPath, 'utf8')
             const matterResult = matter(fileContents)
             const { data, content } = matterResult
-            const info: GrayMatterInfo = { data, content }
+            const html = await convertMarkdownToHtml(content)
+            const info: GrayMatterInfo = {
+                data,
+                content: html
+            }
             return info
         })
         const postData = await Promise.all(allPostsPromises)

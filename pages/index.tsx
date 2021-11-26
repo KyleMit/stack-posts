@@ -34,7 +34,7 @@ export default function Home({allPosts} : IHomeProps) {
               </Link>
               <br />
               <small className={utilStyles.lightText}>
-                {/* <Date dateString={date} /> */}
+                <Date dateString={q.data.creation_date} />
               </small>
             </li>
           ))}
