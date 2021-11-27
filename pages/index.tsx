@@ -34,11 +34,11 @@ export default function Home({allPosts} : IHomeProps) {
           {allPosts.map(({ id, q, a }) => (
             <li key={id}>
               <Link href={`/p/${id}`}>
-                <a>{q?.data?.title}</a>
+                <a>{q.title}</a>
               </Link>
               <br />
               <small >
-                <Date dateString={q.data.creation_date} />
+                <Date dateString={q.creation_date} />
               </small>
             </li>
           ))}

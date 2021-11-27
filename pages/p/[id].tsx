@@ -1,3 +1,5 @@
+/* eslint-disable react/no-children-prop */
+import ReactMarkdown from 'react-markdown'
 import Layout from '../../components/layout'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 import Head from 'next/head'
@@ -13,19 +15,19 @@ export default function Post({ postData }: IPostProps) {
   return (
     <Layout>
       <Head>
-        <title>{postData.q.data.title}</title>
+        <title>{postData.q.title}</title>
       </Head>
 
       <div className="s-page-title">
           <div className="s-page-title--text">
               <h2 className="s-page-title--header">
-                {postData.q.data.title}
+                {postData.q.title}
               </h2>
               <p className="s-page-title--description">
-                <Date dateString={postData.q.data.creation_date} />
+                <Date dateString={postData.q.creation_date} />
               </p>
               <div className="d-flex gs4">
-                {postData.q.data.tags.map((tag) => (
+                {postData.q.tags.map((tag) => (
                   <a key={tag} className="flex--item s-tag s-tag__muted" href="#">{tag}</a>
                 ))}
               </div>
@@ -39,17 +41,21 @@ export default function Post({ postData }: IPostProps) {
           </a>
 
         </h3>
-        <div dangerouslySetInnerHTML={{ __html: postData.q.content }} className="s-prose" />
+        <div className="s-prose" >
+          <ReactMarkdown children={postData.q.body_markdown} />
+        </div>
       </article>
 
       {Boolean(postData.a) && (
         <article>
           <h3>
-            <a href={`https://stackoverflow.com/a/${postData.a.data.answer_id}/${config.userId}`}>
+            <a href={`https://stackoverflow.com/a/${postData?.a?.answer_id}/${config.userId}`}>
             Answer
             </a>
           </h3>
-          <div dangerouslySetInnerHTML={{ __html: postData.a.content }} className="s-prose" />
+          <div className="s-prose" >
+            <ReactMarkdown children={String(postData?.a?.body_markdown)} />
+          </div>
         </article>
       )}
 

@@ -21,7 +21,7 @@
       "protocol": "inspector",
   },
   {
-    "name": "Example",
+    "name": "Command - Posts",
     "type": "node",
     "request": "launch",
     "runtimeExecutable": "node",

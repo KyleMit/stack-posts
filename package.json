@@ -11,6 +11,7 @@
     "lint": "next lint",
     "fetch": "ts-node lib/index.ts fetch",
     "markdown": "ts-node lib/index.ts markdown",
+    "posts": "ts-node lib/index.ts posts",
     "clean": "rm -rf _cache && rm -rf posts"
   },
   "keywords": [
@@ -25,15 +26,15 @@
     "date-fns": "^2.26.0",
     "gray-matter": "^4.0.3",
     "next": "12.0.4",
+    "node-fetch": "^2.6.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "remark": "^14.0.2",
-    "remark-html": "^15.0.0"
+    "react-markdown": "^6.0.3"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^14.11.2",
-    "@types/node-fetch": "^3.0.3",
+    "@types/node-fetch": "^2.5.12",
     "@types/react": "17.0.37",
     "eslint": "^7.32.0",
     "eslint-config-next": "12.0.4",

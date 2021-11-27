@@ -1,8 +1,6 @@
 export interface IPostPaths {
   answerPost: string;
   questionPost: string;
-  answerAltPost: string;
-  questionAltPost: string;
 }
 
 export interface ICachePaths {
@@ -32,10 +30,8 @@ const config: IConfigData = {
 
   },
   posts: {
-    answerPost: "./posts/mine/answers/",
-    questionPost: "./posts/mine/questions/",
-    answerAltPost: "./posts/alt/answers/",
-    questionAltPost: "./posts/alt/questions/"
+    answerPost: "./_posts/answers/",
+    questionPost: "./_posts/questions/",
   }
 
 }
