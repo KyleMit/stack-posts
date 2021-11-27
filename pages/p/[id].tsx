@@ -2,7 +2,6 @@ import Layout from '../../components/layout'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 import Head from 'next/head'
 import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { IPost } from '../../lib/cli'
 import config from '../../lib/config'
@@ -16,12 +15,23 @@ export default function Post({ postData }: IPostProps) {
       <Head>
         <title>{postData.q.data.title}</title>
       </Head>
-      <h2 className={utilStyles.headingXl}>
-        {postData.q.data.title}
-      </h2>
-      <summary>
-        <Date dateString={postData.q.data.creation_date} />
-      </summary>
+
+      <div className="s-page-title">
+          <div className="s-page-title--text">
+              <h2 className="s-page-title--header">
+                {postData.q.data.title}
+              </h2>
+              <p className="s-page-title--description">
+                <Date dateString={postData.q.data.creation_date} />
+              </p>
+              <div className="d-flex gs4">
+                {postData.q.data.tags.map((tag) => (
+                  <a className="flex--item s-tag s-tag__muted" href="#">{tag}</a>
+                ))}
+              </div>
+          </div>
+      </div>
+
       <article>
         <h3>
           <a href={`https://stackoverflow.com/q/${postData.id}/${config.userId}`}>
@@ -29,16 +39,18 @@ export default function Post({ postData }: IPostProps) {
           </a>
 
         </h3>
-        <div dangerouslySetInnerHTML={{ __html: postData.q.content }} />
+        <div dangerouslySetInnerHTML={{ __html: postData.q.content }} className="s-prose" />
       </article>
+
       <article>
         <h3>
           <a href={`https://stackoverflow.com/a/${postData.a.data.answer_id}/${config.userId}`}>
           Answer
           </a>
         </h3>
-        <div dangerouslySetInnerHTML={{ __html: postData.a.content }} />
+        <div dangerouslySetInnerHTML={{ __html: postData.a.content }} className="s-prose" />
       </article>
+
     </Layout>
   )
 }
