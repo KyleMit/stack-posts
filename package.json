@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "npm run markdown",
     "start": "next start",
     "lint": "next lint",
     "fetch": "ts-node lib/index.ts fetch",
