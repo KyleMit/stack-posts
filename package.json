@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "npm run markdown",
     "start": "next start",
     "lint": "next lint",
     "fetch": "ts-node lib/index.ts fetch",
-    "markdown": "ts-node lib/index.ts markdown"
+    "markdown": "ts-node lib/index.ts markdown",
+    "clean": "rm -rf _cache && rm -rf posts"
   },
   "keywords": [
     "stackoverflow",
@@ -23,7 +25,6 @@
     "date-fns": "^2.26.0",
     "gray-matter": "^4.0.3",
     "next": "12.0.4",
-    "node-fetch": "^3.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "remark": "^14.0.2",
