@@ -1,7 +1,7 @@
 {
   "name": "@kylemit/stack-posts",
   "version": "1.0.0",
-  "description": "",
+  "description": " An offline, searchable, personalized copy of Stack Overflow",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -11,9 +11,13 @@
     "fetch": "ts-node lib/index.ts fetch",
     "markdown": "ts-node lib/index.ts markdown"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "stackoverflow",
+    "markdown"
+  ],
+  "author": "KyleMit",
+  "repository": "github:KyleMit/stack-posts",
+  "license": "MIT",
   "dependencies": {
     "@stackoverflow/stacks": "^0.72.0",
     "date-fns": "^2.26.0",
@@ -34,6 +38,6 @@
     "eslint-config-next": "12.0.4",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.2"
+    "typescript": "^4.4.4"
   }
 }

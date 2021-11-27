@@ -26,7 +26,7 @@ export default function Post({ postData }: IPostProps) {
               </p>
               <div className="d-flex gs4">
                 {postData.q.data.tags.map((tag) => (
-                  <a className="flex--item s-tag s-tag__muted" href="#">{tag}</a>
+                  <a key={tag} className="flex--item s-tag s-tag__muted" href="#">{tag}</a>
                 ))}
               </div>
           </div>
