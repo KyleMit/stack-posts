@@ -42,14 +42,16 @@ export default function Post({ postData }: IPostProps) {
         <div dangerouslySetInnerHTML={{ __html: postData.q.content }} className="s-prose" />
       </article>
 
-      <article>
-        <h3>
-          <a href={`https://stackoverflow.com/a/${postData.a.data.answer_id}/${config.userId}`}>
-          Answer
-          </a>
-        </h3>
-        <div dangerouslySetInnerHTML={{ __html: postData.a.content }} className="s-prose" />
-      </article>
+      {Boolean(postData.a) && (
+        <article>
+          <h3>
+            <a href={`https://stackoverflow.com/a/${postData.a.data.answer_id}/${config.userId}`}>
+            Answer
+            </a>
+          </h3>
+          <div dangerouslySetInnerHTML={{ __html: postData.a.content }} className="s-prose" />
+        </article>
+      )}
 
     </Layout>
   )

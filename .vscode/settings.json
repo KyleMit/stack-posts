@@ -1,15 +1,17 @@
 {
   "cSpell.ignoreRegExpList": ["filter.*", "shallow.*"],
   "markdownlint.config": {
+    "MD003": {"style": "atx"},
     "MD041": false,
     "MD026": false,
-    "MD046": false,
+    "MD046": {"style": "fenced"},
     "MD033": false,
     "MD014": false,
     "MD047": false,
     "MD010": false,
     "MD029": false,
     "MD007": false,
-    "MD009": false
+    "MD009": false,
+    "MD036": false
   }
 }
