@@ -1,9 +1,8 @@
 /* eslint-disable react/no-children-prop */
 import ReactMarkdown from 'react-markdown'
-import Layout from '../../components/layout'
 import Head from 'next/head'
-import Date from '../../components/date'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { Layout, Date, Tags } from '../../components/'
 import { getPostsCached, IPost } from '../../lib/cli'
 import { config } from '../../lib/config'
 
