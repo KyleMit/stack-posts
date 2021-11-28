@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-export const siteTitle = 'StackPosts . Me'
+export const siteTitle = 'My Overflow'
 
 const Layout: React.FC = ({ children }) => {
   return (
