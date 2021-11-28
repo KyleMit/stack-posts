@@ -24,7 +24,7 @@ export default function Post({ postData }: IPostProps) {
               <p className="s-page-title--description">
                 <Date dateString={postData.q.creation_date} />
               </p>
-              <Tags />
+              <Tags tags={postData.q.tags} />
           </div>
       </div>
 

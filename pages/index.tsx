@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
+import { Layout, siteTitle } from '../components/'
 import Link from 'next/link'
-import Date from '../components/date'
+import { Date, Tags } from '../components'
 import { GetStaticProps } from 'next'
 import { getPostsCached, IPost } from '../lib/cli'
 
@@ -28,20 +28,33 @@ export default function Home({allPosts} : IHomeProps) {
       </div>
 
       <section >
-        <h2>Posts</h2>
-        <ul>
+        <h2>All Posts</h2>
+        <div>
           {allPosts.map(({ id, q, a }) => (
-            <li key={id}>
-              <Link href={`/p/${id}`}>
-                <a>{q.title}</a>
-              </Link>
-              <br />
-              <small >
-                <Date dateString={q.creation_date} />
-              </small>
-            </li>
+            <div key={id} className="s-post-summary s-post-summary__minimal">
+              <div className="s-post-summary--content">
+                  <Link href={`/p/${id}`}>
+                    <a  className="s-post-summary--content-title s-link">{q.title}</a>
+                  </Link>
+                  <div className="s-post-summary--meta">
+                      <div className="s-post-summary--meta-tags">
+                        {q.tags.map((tag) => (
+                              <a key={tag} className="s-tag s-tag__muted" href="#">{tag}</a>
+                          ))}
+                      </div>
+
+                      <div className="s-user-card s-user-card__minimal">
+                          <Date
+                            dateString={q.creation_date}
+                            className="s-user-card--time"
+                          />
+                      </div>
+
+                  </div>
+              </div>
+          </div>
           ))}
-        </ul>
+        </div>
       </section>
 
     </Layout>
