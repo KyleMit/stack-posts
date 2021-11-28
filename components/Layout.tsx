@@ -2,28 +2,30 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 export const siteTitle = 'My Overflow'
+export const siteDesc = 'An offline, searchable, personalized copy of StackOverflow'
 
 const Layout: React.FC = ({ children }) => {
   return (
     <div >
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content="An offline, searchable, personalized copy of StackOverflow" />
+        <meta name="description" content={siteDesc} />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
       <header className="s-topbar">
-          <div className="s-topbar--container">
+          <div className="s-topbar--container wmx8 mx-auto">
               <Link href="/">
-                <a className="s-topbar--menu-btn">
-                  {siteTitle}
+                <a className="s-topbar--logo s-link__inherit fs-body3 ml16">
+                  <span className='mr1'>my</span>
+                  <span className="fw-bold">overflow</span>
                 </a>
               </Link>
           </div>
       </header>
 
-      <main className="wmx10 mx-auto m8 p8">
+      <main className="wmx8 mx-auto m8 p8">
         {children}
       </main>
 

@@ -28,11 +28,12 @@ export default function Post({ postData }: IPostProps) {
 
       <article className="mt24">
         <h2 className="fs-headline1 mb6">Question</h2>
-        <div className="s-user-card s-user-card__minimal mb16">
+        <div className="s-user-card s-user-card__minimal mb24">
+            <UserCard user={postData?.q?.owner} />
+            <span className="mr4 fc-black-200">·</span>
             <a href={`https://stackoverflow.com/q/${postData.id}/${config.userId}`}>
               <time className="s-user-card--time">{postData.q.creation_date}</time>
             </a>
-            <UserCard user={postData?.q?.owner} />
         </div>
         <MarkdownWrapper md={postData.q.body_markdown} />
       </article>
@@ -40,11 +41,12 @@ export default function Post({ postData }: IPostProps) {
       {Boolean(postData.a) && (
         <article className="mt24">
           <h2 className="fs-headline1 mb6">Answer</h2>
-          <div className="s-user-card s-user-card__minimal mb16">
+          <div className="s-user-card s-user-card__minimal mb24">
+            <UserCard user={postData?.a?.owner} />
+            <span className="mr4 fc-black-200">·</span>
             <a href={`https://stackoverflow.com/a/${postData?.a?.answer_id}/${config.userId}`}>
               <time className="s-user-card--time">{postData?.a?.creation_date}</time>
             </a>
-            <UserCard user={postData?.a?.owner} />
           </div>
           <MarkdownWrapper md={postData?.a?.body_markdown} />
         </article>
