@@ -27,9 +27,22 @@ const Layout: React.FC = ({ children }) => {
         {children}
       </main>
 
-      <footer >
-        <a href="https://github.com/KyleMit/stack-posts">
-          Source on Github
+      <footer className="bg-black-025 fc-black-400 p32 ta-center">
+        {'Built on '}
+        <a href="https://github.com/KyleMit/stack-posts" className="s-anchors td-underline">
+          Github
+        </a>
+        {' with '}
+        <a href="https://api.stackexchange.com/" className="s-anchors td-underline">
+          Stack Exchange API
+        </a>
+        {', '}
+        <a href="https://stackoverflow.design/" className="s-anchors td-underline">
+          Stacks Design System
+        </a>
+        {', & '}
+        <a href="https://nextjs.org/" className="s-anchors td-underline">
+          NextJS
         </a>
       </footer>
 
