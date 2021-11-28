@@ -25,11 +25,7 @@ export default function Post({ postData }: IPostProps) {
               <p className="s-page-title--description">
                 <Date dateString={postData.q.creation_date} />
               </p>
-              <div className="d-flex gs4">
-                {postData.q.tags.map((tag) => (
-                  <a key={tag} className="flex--item s-tag s-tag__muted" href="#">{tag}</a>
-                ))}
-              </div>
+              <Tags />
           </div>
       </div>
 
