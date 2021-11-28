@@ -1,12 +1,11 @@
 /* eslint-disable react/no-children-prop */
 import ReactMarkdown from 'react-markdown'
 import Layout from '../../components/layout'
-import { getAllPostIds, getPostData } from '../../lib/posts'
 import Head from 'next/head'
 import Date from '../../components/date'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { IPost } from '../../lib/cli'
-import config from '../../lib/config'
+import { getPostsCached, IPost } from '../../lib/cli'
+import { config } from '../../lib/config'
 
 interface IPostProps {
   postData: IPost
@@ -64,7 +63,10 @@ export default function Post({ postData }: IPostProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllPostIds()
+  const allPosts = await getPostsCached()
+  const paths = Object.keys(allPosts).map(id => ({
+      params: { id }
+  }))
   return {
     paths,
     fallback: false
@@ -72,10 +74,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postData = await getPostData(String(params?.id))
+  const allPosts = await getPostsCached()
   return {
     props: {
-      postData
+      postData: allPosts[String(params?.id)]
     }
   }
 }

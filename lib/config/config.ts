@@ -18,7 +18,7 @@ export interface IConfigData {
   posts: IPostPaths;
 }
 
-const config: IConfigData = {
+export const config: IConfigData = {
   userId: 1366033,
   cache: {
     answerData: "./_cache/answers-mine.json",
@@ -35,5 +35,3 @@ const config: IConfigData = {
   }
 
 }
-
-export default config

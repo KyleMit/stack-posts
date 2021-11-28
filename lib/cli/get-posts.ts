@@ -1,6 +1,6 @@
 import { objMapValues, fetchDataCached } from '../utils'
 import { IAnswer, IQuestion } from '../models'
-import config from '../config'
+import { config } from '../config'
 import { fetchData } from '.'
 
 

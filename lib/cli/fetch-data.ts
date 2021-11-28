@@ -1,4 +1,4 @@
-import config from "../config"
+import { config } from "../config"
 import { createDirectories, isNumber, uniq, fetchDataCached } from "../utils"
 import { getAnswersById, getAnswersByUser, getQuestionsById, getQuestionsByUser, getUsersById } from "../apis/stack"
 import { IFetchedData } from "../models"

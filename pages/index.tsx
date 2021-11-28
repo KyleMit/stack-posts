@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
-import { getAllPosts } from '../lib/posts'
 import Link from 'next/link'
 import Date from '../components/date'
 import { GetStaticProps } from 'next'
-import { IPost } from '../lib/cli'
+import { getPostsCached, IPost } from '../lib/cli'
 
 interface IHomeProps {
   allPosts: IPost[]
@@ -50,10 +49,10 @@ export default function Home({allPosts} : IHomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPosts = await getAllPosts()
+  const allPosts = await getPostsCached()
   return {
     props: {
-      allPosts
+      allPosts: Object.values(allPosts)
     }
   }
 }
