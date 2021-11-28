@@ -16,7 +16,7 @@ export default function Home({allPosts} : IHomeProps) {
         <title>{siteTitle}</title>
       </Head>
 
-      <div className="s-page-title">
+      <div className="s-page-title m16">
           <div className="s-page-title--text">
               <h1 className="s-page-title--header">
                 An offline, searchable, personalized copy of{' '}
@@ -28,10 +28,12 @@ export default function Home({allPosts} : IHomeProps) {
       </div>
 
       <section >
-        <h2>All Posts</h2>
+        <h2 className="m16">
+          All Posts
+        </h2>
         <div>
           {allPosts.map(({ id, q, a }) => (
-            <div key={id} className="s-post-summary s-post-summary__minimal">
+            <div key={id} className="s-post-summary s-post-summary__minimal bbw0">
               <div className="s-post-summary--content">
                   <Link href={`/p/${id}`}>
                     <a  className="s-post-summary--content-title s-link">{q.title}</a>

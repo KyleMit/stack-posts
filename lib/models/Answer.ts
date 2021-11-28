@@ -1,4 +1,4 @@
-import { IPostBaseApi, UserBase } from ".";
+import { IPostBaseApi, IUser, UserBase } from ".";
 import { CreateMethod, epochToISO, Modify } from "../utils";
 
 export interface IAnswerApi extends IPostBaseApi {
@@ -10,6 +10,10 @@ export interface IAnswerApi extends IPostBaseApi {
 export interface IAnswer extends Modify<IAnswerApi, {
     creation_date: string
     last_activity_date: string
+}> {}
+
+export interface IAnswerEnriched extends Modify<IAnswer, {
+    owner: IUser
 }> {}
 
 export interface IAnswerMeta extends Omit<IAnswer, 'body_markdown'> {}

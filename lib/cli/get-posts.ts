@@ -1,13 +1,13 @@
 import { objMapValues, fetchDataCached } from '../utils'
-import { IAnswer, IQuestion } from '../models'
+import { IAnswerEnriched, IQuestionEnriched } from '../models'
 import { config } from '../config'
 import { fetchData } from '.'
 
 
 export interface IPost {
     id: string,
-    q: IQuestion,
-    a?: IAnswer
+    q: IQuestionEnriched,
+    a?: IAnswerEnriched
 }
 
 export const getPostsCached = async ():  Promise<Record<string, IPost>> => {
@@ -23,12 +23,23 @@ export const getPosts = async (): Promise<Record<string, IPost>> => {
 
     const questionsHash = Object.fromEntries(allQuestions.map(q => [String(q.question_id), q]))
     const answersHash = Object.fromEntries(allAnswers.map(a => [String(a.question_id), a]))
+    const usersHash = Object.fromEntries(users.map(u => [u.user_id, u]))
 
-    const postsHash = objMapValues(questionsHash, (q) => ({
-        id: String(q.question_id),
-        q: q,
-        a: answersHash[q.question_id]
-    }))
+    const postsHash = objMapValues(questionsHash, (q) => {
+        const a = answersHash[q.question_id]
+        return ({
+            id: String(q.question_id),
+            q: {
+                ...q,
+                owner: usersHash[q.owner.user_id]
+            },
+            a: {
+                ...a,
+                owner: usersHash[a?.owner?.user_id]
+
+            }
+        })
+    })
 
     return postsHash
 }
