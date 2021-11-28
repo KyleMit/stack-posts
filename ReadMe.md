@@ -9,10 +9,17 @@ Personalized Local Copy of Stack Overflow
 
 ## Todo
 
+* Nuxt rename file
+* Update to ESM
+  * Update to latest Remark Package
 * Use [Stacks](https://stackoverflow.design/)
+  * Replace inline build once stacks releases update
+  * Purge CSS
+* Add 404.tsx page
 * Improve Syntax Highlighting
 * Add code copy button
 * Fix Heading levels from markdown 1,2,3 -> 4,5,6
+* Add Sort
 * Build site with **awesome** search 🚀
 * Add tags view
 * Run Weekly Update via Github Actions
