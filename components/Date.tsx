@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 interface IDateProps {
   dateString: string;
-  className: string;
+  className?: string;
 }
 const Date: FC<IDateProps> = ({ dateString, className }) => {
   const date = parseISO(dateString)

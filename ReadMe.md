@@ -9,7 +9,7 @@ Personalized Local Copy of Stack Overflow
 
 ## Todo
 
-* Nuxt rename file
+* Fix/customize markdown rendered - [ex](https://www.myoverflow.dev/p/2522749)
 * Update to ESM
   * Update to latest Remark Package
 * Use [Stacks](https://stackoverflow.design/)
