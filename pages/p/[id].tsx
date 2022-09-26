@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { Layout, Date, Tags, MarkdownWrapper, UserCard } from '../../components/'
+import { Layout, DateDisplay, Tags, MarkdownWrapper, UserCard } from '../../components/'
 import { getPostsCached, IPost } from '../../lib/cli'
 import { config } from '../../lib/config'
 
@@ -21,7 +21,7 @@ export default function Post({ postData }: IPostProps) {
               </h1>
               <p className="s-page-title--description">
                 <Tags tags={postData.q.tags} />
-                <Date dateString={postData.q.creation_date} />
+                <DateDisplay dateString={postData.q.creation_date} />
               </p>
           </div>
       </div>

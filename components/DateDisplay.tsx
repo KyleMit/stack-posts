@@ -1,13 +1,13 @@
 import { parseISO, format } from 'date-fns'
 import { FC } from 'react'
 
-interface IDateProps {
+interface IDateDisplayProps {
   dateString: string;
   className?: string;
 }
-const Date: FC<IDateProps> = ({ dateString, className }) => {
+const DateDisplay: FC<IDateDisplayProps> = ({ dateString, className }) => {
   const date = parseISO(dateString)
   return <time className={className} dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>
 }
 
-export default Date
+export default DateDisplay

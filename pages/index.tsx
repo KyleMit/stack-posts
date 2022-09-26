@@ -1,14 +1,16 @@
 import Head from 'next/head'
 import { Layout, siteTitle } from '../components/'
 import Link from 'next/link'
-import { Date, Tags } from '../components'
+import { DateDisplay, Tags } from '../components'
 import { GetStaticProps } from 'next'
 import { getPostsCached, IPost } from '../lib/cli'
 
 interface IHomeProps {
   allPosts: IPost[]
 }
-export default function Home({allPosts} : IHomeProps) {
+export default function Home({ allPosts }: IHomeProps) {
+  allPosts.sort((a,b) => new Date(b.q.creation_date).getTime() - new Date(a.q.creation_date).getTime())
+
   return (
     <Layout>
 
@@ -46,7 +48,7 @@ export default function Home({allPosts} : IHomeProps) {
                       </div>
 
                       <div className="s-user-card s-user-card__minimal">
-                          <Date
+                          <DateDisplay
                             dateString={q.creation_date}
                             className="s-user-card--time"
                           />
