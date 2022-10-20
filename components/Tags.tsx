@@ -7,10 +7,10 @@ interface ITagsProps {
 const Tags: FC<ITagsProps> = ({ tags }) => {
   if (!tags?.length) return null;
   return (
-    <div className="d-flex gs4">
+    <div className="d-flex g4">
       {tags.map((tag) => (
-            <Tag key={tag} tag={tag} />
-        ))}
+          <Tag key={tag} tag={tag} />
+      ))}
   </div>
   )
 }
