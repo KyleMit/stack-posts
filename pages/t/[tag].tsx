@@ -12,17 +12,15 @@ export default function Post({ tag, posts }: IPostProps) {
     <Layout>
       <Head>
         <title>
-          {tag.length} posts tagged {tag}
+          {posts.length} posts tagged {tag}
         </title>
       </Head>
 
-      <div className="s-page-title m16">
-          <div className="s-page-title--text">
-              <h1 className="s-page-title--header">
-                {tag.length} posts tagged <span className="s-tag s-tag__muted fs-title">{tag}</span>
-              </h1>
-          </div>
-      </div>
+      <header className="m16">
+          <h1 className="s-page-title--header">
+            {posts.length} posts tagged <span className="s-tag s-tag__muted fs-title">{tag}</span>
+          </h1>
+      </header>
 
 
       <section >
