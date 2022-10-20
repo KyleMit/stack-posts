@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Layout, siteTitle } from '../components/'
+import { Layout, PostList, siteTitle } from '../components/'
 import Link from 'next/link'
 import { DateDisplay, Tags } from '../components'
 import { GetStaticProps } from 'next'
@@ -34,30 +34,7 @@ export default function Home({ allPosts }: IHomeProps) {
           All Posts
         </h2>
         <div>
-          {allPosts.map(({ id, q, a }) => (
-            <div key={id} className="s-post-summary s-post-summary__minimal bbw0">
-              <div className="s-post-summary--content">
-                  <Link href={`/p/${id}`}>
-                    <a  className="s-post-summary--content-title s-link">{q.title}</a>
-                  </Link>
-                  <div className="s-post-summary--meta">
-                      <div className="s-post-summary--meta-tags">
-                        {q.tags.map((tag) => (
-                              <a key={tag} className="s-tag s-tag__muted" href="#">{tag}</a>
-                          ))}
-                      </div>
-
-                      <div className="s-user-card s-user-card__minimal">
-                          <DateDisplay
-                            dateString={q.creation_date}
-                            className="s-user-card--time"
-                          />
-                      </div>
-
-                  </div>
-              </div>
-          </div>
-          ))}
+          <PostList posts={allPosts} />
         </div>
       </section>
 
