@@ -2,10 +2,10 @@ import { FC } from 'react'
 import Image from 'next/image'
 import { IUser } from '../lib/models'
 
-interface IDateProps {
+interface IUserCardProps {
   user?: IUser;
 }
-const UserCard: FC<IDateProps> = ({ user }) => {
+const UserCard: FC<IUserCardProps> = ({ user }) => {
   if (!user?.user_id) return null;
   return (
     <>

@@ -14,7 +14,7 @@ export default function Post({ postData }: IPostProps) {
         <title>{postData.q.title}</title>
       </Head>
 
-      <div className="s-page-title">
+      <header className="s-page-title">
           <div className="s-page-title--text">
               <h1 className="s-page-title--header">
                 {postData.q.title}
@@ -24,7 +24,7 @@ export default function Post({ postData }: IPostProps) {
                 <DateDisplay dateString={postData.q.creation_date} />
               </p>
           </div>
-      </div>
+      </header>
 
       <article className="mt24">
         <h2 className="fs-headline1 mb6">Question</h2>

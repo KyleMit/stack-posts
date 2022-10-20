@@ -24,8 +24,8 @@ const PostList: FC<IPostListProps> = ({ posts }) => (
 
                         <div className="s-user-card s-user-card__minimal">
                             <DateDisplay
-                            dateString={q.creation_date}
-                            className="s-user-card--time"
+                                dateString={q.creation_date}
+                                className="s-user-card--time"
                             />
                         </div>
 

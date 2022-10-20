@@ -14,7 +14,7 @@ const Layout: React.FC = ({ children }) => {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
-      <header className="s-topbar">
+      <div className="s-topbar">
           <div className="s-topbar--container wmx8 mx-auto">
               <Link href="/">
                 <a className="s-topbar--logo s-link__inherit fs-body3 ml16">
@@ -23,7 +23,7 @@ const Layout: React.FC = ({ children }) => {
                 </a>
               </Link>
           </div>
-      </header>
+      </div>
 
       <main className="wmx8 mx-auto m8 p8">
         {children}

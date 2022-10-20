@@ -1,7 +1,5 @@
 import Head from 'next/head'
 import { Layout, PostList, siteTitle } from '../components/'
-import Link from 'next/link'
-import { DateDisplay, Tags } from '../components'
 import { GetStaticProps } from 'next'
 import { getPostsCached, IPost } from '../lib/cli'
 
@@ -18,24 +16,17 @@ export default function Home({ allPosts }: IHomeProps) {
         <title>{siteTitle}</title>
       </Head>
 
-      <div className="s-page-title m16">
-          <div className="s-page-title--text">
-              <h1 className="s-page-title--header">
-                An offline, searchable, personalized copy of{' '}
-                <a href="https://stackoverflow.com/users/1366033/kylemit">
-                  StackOverflow
-                </a>
-              </h1>
-          </div>
-      </div>
+      <header className="m16">
+        <h1 className="s-page-title--header">
+          An offline, searchable, personalized copy of{' '}
+          <a href="https://stackoverflow.com/users/1366033/kylemit">
+            StackOverflow
+          </a>
+        </h1>
+      </header>
 
-      <section >
-        <h2 className="m16">
-          All Posts
-        </h2>
-        <div>
-          <PostList posts={allPosts} />
-        </div>
+      <section>
+        <PostList posts={allPosts} />
       </section>
 
     </Layout>
