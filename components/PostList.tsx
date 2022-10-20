@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { FC } from 'react'
-import { DateDisplay } from './'
+import { DateDisplay, Tag } from './'
 import { IPost } from '../lib/cli'
 
 interface IPostListProps {
@@ -17,10 +17,8 @@ const PostList: FC<IPostListProps> = ({ posts }) => (
                     </Link>
                     <div className="s-post-summary--meta">
                         <div className="s-post-summary--meta-tags">
-                        {q.tags.map((tag) => (
-                            <Link key={tag} href={`/t/${tag}`}>
-                            <a className="s-tag s-tag__muted">{tag}</a>
-                            </Link>  
+                            {q.tags.map((tag) => (
+                                <Tag tag={tag} key={tag} />  
                             ))}
                         </div>
 
