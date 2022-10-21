@@ -41,7 +41,7 @@ export default function Post({ postData }: IPostProps) {
         <MarkdownWrapper md={postData.q.body_markdown} />
       </article>
 
-      {Boolean(postData.a) && (
+      {Boolean(postData.a?.answer_id) ? (
         <article className="mt24">
           <div className="d-flex jc-space-between">
             <div>
@@ -61,6 +61,12 @@ export default function Post({ postData }: IPostProps) {
 
           <MarkdownWrapper md={postData?.a?.body_markdown} />
         </article>
+      ) : (
+          <div className="mt16">
+            <a href={`https://stackoverflow.com/q/${postData.q?.question_id}/${config.userId}#your-answer-header`}>
+              <h2 className="fs-headline1 mb6">Know the Answer? Add it here!</h2>
+            </a>
+          </div>
       )}
 
     </Layout>

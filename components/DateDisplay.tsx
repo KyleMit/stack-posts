@@ -6,8 +6,17 @@ interface IDateDisplayProps {
   className?: string;
 }
 const DateDisplay: FC<IDateDisplayProps> = ({ dateString, className }) => {
-  const date = parseISO(dateString)
-  return <time className={className} dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>
+  
+  let formatted: string;
+  try {
+    const date = parseISO(dateString)
+    formatted = format(date, 'LLLL d, yyyy')
+  } catch (error) {
+    // fail gracefully
+    console.log(`Error parsing ${dateString}`)
+    formatted = dateString
+  }
+  return <time className={className} dateTime={dateString}>{formatted}</time>
 }
 
 export default DateDisplay
