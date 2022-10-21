@@ -12,7 +12,10 @@ const Layout: React.FC = ({ children }) => {
         <meta name="description" content={siteDesc} />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
-        <script async src="https://cdn.splitbee.io/sb.js"></script>
+
+        {Boolean(process.env.VERCEL_ENV) && (
+          <script async src="https://cdn.splitbee.io/sb.js"></script>
+        )}
 
       </Head>
 
