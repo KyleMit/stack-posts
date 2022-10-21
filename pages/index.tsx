@@ -9,7 +9,6 @@ interface IHomeProps {
 export default function Home({ allPosts }: IHomeProps) {
   allPosts.sort((a,b) => new Date(b.q.creation_date).getTime() - new Date(a.q.creation_date).getTime())
 
-  console.log(JSON.stringify(process.env, null, 2))
   return (
     <Layout>
 
