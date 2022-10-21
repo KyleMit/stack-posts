@@ -6,7 +6,7 @@ interface ITagProps {
 }
 const Tag: FC<ITagProps> = ({ tag }) => {
   return (
-    <Link href={`/t/${tag}`}>
+    <Link href={`/t/${encodeURIComponent(tag)}`}>
       <a className="s-tag s-tag__muted">{tag}</a>
     </Link>  
   )
