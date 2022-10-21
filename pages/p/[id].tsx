@@ -16,7 +16,11 @@ export default function Post({ postData }: IPostProps) {
 
       <header >
         <div className="s-page-title s-page-title--text">
-          <a href={`https://stackoverflow.com/q/${postData.q.question_id}/${config.userId}`}>
+          <a
+            href={`https://stackoverflow.com/q/${postData.q.question_id}/${config.userId}`}
+            data-splitbee-event="External Link"
+            data-splitbee-event-destination="stackoverflow"
+          >
             <h1 className="s-page-title--header">
               {postData.q.title}
             </h1>
